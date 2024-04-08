@@ -1,7 +1,14 @@
 <template>
-  <transition name="slide-fade" mode="out-in">
+  <div :class="{ 'w-0': showMenuBtn, 'mr-0': !showMenuBtn }">
+    <div class="py-9 px-5" v-if="showMenuBtn">
+      <Button plain text @click="toggle" class="rotate-180">
+        <ChevronLeft />
+      </Button>
+    </div>
+  </div>
+  <transition name="slide-fade">
     <div class="py-9 w-72 shadow-lg px-5 min-h-screen" v-if="appear">
-      <div class="flex items-center justify-between w-56 ml-4" v-show="appear">
+      <div class="flex items-center justify-between w-56 ml-4">
         <h1 class="text-3xl">wire: cotton</h1>
         <Button plain text @click="toggle">
           <ChevronLeft />
@@ -37,11 +44,6 @@
       </div>
     </div>
   </transition>
-  <div class="py-9 px-5" v-if="!appear">
-    <Button plain text @click="toggle" class="rotate-180">
-      <ChevronLeft />
-    </Button>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -51,10 +53,21 @@ import Button from 'primevue/button'
 import { ref } from 'vue'
 
 const appear = ref(true)
+const showMenuBtn = ref(false)
+
 function toggle() {
   appear.value = !appear.value
+  if (showMenuBtn.value) {
+    showMenuBtn.value = false
+    return
+  }
+  // showMenuBtn.value = true
+  setTimeout(() => {
+    showMenuBtn.value = true
+  }, 300)
 }
 </script>
+
 <style scoped>
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
@@ -67,6 +80,5 @@ function toggle() {
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: translateX(-100%);
-  opacity: 0;
 }
 </style>
