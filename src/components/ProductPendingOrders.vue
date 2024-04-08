@@ -128,7 +128,42 @@
           </div>
         </div>
       </AccordionTab>
+      <AccordionTab>
+        <template #header>
+          <div class="flex justify-between w-full px-2">
+            <span>Pedido #8341</span>
+            <div class="flex space-x-8">
+              <span class="flex items-center gap-2">
+                <ProductDateIcon />
+                10/12
+              </span>
+              <span class="flex items-center gap-2">
+                <ProductPriceIcon />
+                160,00
+              </span>
+              <span class="mr-3">detalhes</span>
+            </div>
+          </div>
+        </template>
+        <div class="px-2">
+          <div class="flex">
+            <div class="w-full space-y-3 px-4">
+              <p><span class="mr-3">3x</span> Camisa algodão preta</p>
+              <p><span class="mr-3">1x</span> Calça moletom verde</p>
+            </div>
+            <div class="flex self-end justify-end w-full items-center space-x-3">
+              <p class="font-semibold">pedido completo</p>
+              <ArrowRightIcon />
+            </div>
+          </div>
+        </div>
+      </AccordionTab>
     </Accordion>
+    <hr />
+    <div class="w-full justify-center flex items-center h-12">
+      ver todos
+      <ChevronLeft class="rotate-180 ml-2" />
+    </div>
   </div>
 </template>
 
