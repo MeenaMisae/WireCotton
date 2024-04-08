@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="shadow-md">
-    <Accordion :activeIndex="0">
+    <Accordion :activeIndex="0" class="font-questrial">
       <AccordionTab>
         <template #header>
           <div class="flex justify-between w-full px-2">
