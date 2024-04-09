@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'w-0': showMenuBtn, 'mr-0': !showMenuBtn }">
-    <div class="py-9 px-5" v-if="showMenuBtn">
+    <div class="mt-[2.4rem]" v-if="showMenuBtn">
       <Button plain text @click="toggle" class="rotate-180">
         <ChevronLeft />
       </Button>
