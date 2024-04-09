@@ -2,7 +2,16 @@
   <div class="flex justify-between py-11 text-xl items-center">
     <div class="">Início</div>
     <div class="flex items-center">
+      <Button plain text>
+        <SearchLensIcon />
+      </Button>
+      <Button plain text @click="toggleNotifications">
+        <NotificationBellIcon v-badge.contrast />
+      </Button>
+      <OverlayPanel ref="openNotifications" class="ml-2"> <div>Notificações</div> </OverlayPanel>
+
       <Button plain text @click="toggle" aria-haspopup="true" aria-controls="overlay_tmenu">
+        <Avatar label="M" class="mr-3 h-9 w-9" shape="circle" />
         <span class="text-lg font-questrial mr-2">Meena</span>
         <ChevronLeft class="-rotate-90" />
       </Button>
@@ -13,78 +22,34 @@
 
 <script setup>
 import { ref } from 'vue'
+import OverlayPanel from 'primevue/overlaypanel'
+import Avatar from 'primevue/avatar'
 import TieredMenu from 'primevue/tieredmenu'
 import Button from 'primevue/button'
 import ChevronLeft from '@/components/icons/ChevronLeft.vue'
+import SearchLensIcon from './icons/SearchLensIcon.vue'
+import NotificationBellIcon from './icons/NotificationBellIcon.vue'
 
+const openNotifications = ref()
+const toggleNotifications = (event) => {
+  openNotifications.value.toggle(event)
+}
 const menu = ref()
 const items = ref([
   {
-    label: 'File',
-    icon: 'pi pi-file',
-    items: [
-      {
-        label: 'New',
-        icon: 'pi pi-plus',
-        items: [
-          {
-            label: 'Document',
-            icon: 'pi pi-file'
-          },
-          {
-            label: 'Image',
-            icon: 'pi pi-image'
-          },
-          {
-            label: 'Video',
-            icon: 'pi pi-video'
-          }
-        ]
-      },
-      {
-        label: 'Open',
-        icon: 'pi pi-folder-open'
-      },
-      {
-        label: 'Print',
-        icon: 'pi pi-print'
-      }
-    ]
+    label: 'Perfil',
+    icon: 'pi pi-user'
   },
   {
-    label: 'Edit',
-    icon: 'pi pi-file-edit',
-    items: [
-      {
-        label: 'Copy',
-        icon: 'pi pi-copy'
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-times'
-      }
-    ]
-  },
-  {
-    label: 'Search',
-    icon: 'pi pi-search'
+    label: 'Configurações',
+    icon: 'pi pi-cog'
   },
   {
     separator: true
   },
   {
-    label: 'Share',
-    icon: 'pi pi-share-alt',
-    items: [
-      {
-        label: 'Slack',
-        icon: 'pi pi-slack'
-      },
-      {
-        label: 'Whatsapp',
-        icon: 'pi pi-whatsapp'
-      }
-    ]
+    label: 'Sair',
+    icon: 'pi pi-sign-out'
   }
 ])
 
