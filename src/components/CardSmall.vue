@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-md w-40 h-36 flex items-center justify-center flex-col">
+  <div class="shadow-md border w-40 h-36 flex items-center justify-center flex-col">
     <div class="flex items-center justify-center">
       <component :is="iconComponent" />
       <span class="text-3xl ml-2 font-semibold">{{ quantity }}</span>
