@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-between py-11 text-xl items-center">
-    <div class="">Início</div>
+  <div class="flex justify-between py-8 text-xl items-center">
+    <div>Início</div>
     <div class="flex items-center">
       <Button plain text>
         <SearchLensIcon />
