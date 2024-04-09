@@ -2,12 +2,12 @@
   <div class="h-screen">
     <div class="flex">
       <SideMenu />
-      <div class="pl-5 ml-8">
+      <div class="pr-10 pl-5 ml-8 w-[100%]">
         <NavBar />
         <div class="flex">
-          <div>
+          <div class="w-[100%]">
             <h3 class="text-2xl font-semibold mb-4">Resumos</h3>
-            <div class="flex space-x-8">
+            <div class="flex space-x-8 w-full">
               <CardSmall
                 v-for="resume in resumes"
                 :key="resume.title"
@@ -16,7 +16,7 @@
                 :icon="resume.icon"
               />
             </div>
-            <div class="mt-12 max-w-[46rem]">
+            <div class="mt-12 w-[100%]">
               <div>
                 <ProductPendingOrders />
               </div>
