@@ -1,12 +1,12 @@
 <template>
-  <div class="flex justify-between py-4">
+  <div class="flex justify-between my-4">
     <h3 class="text-2xl font-semibold">Pedidos em Aberto</h3>
     <div class="flex items-center">
       <p class="mr-2">ver todos</p>
       <ChevronLeft class="rotate-180" />
     </div>
   </div>
-  <div class="shadow-md">
+  <div class="shadow-md border">
     <Accordion :activeIndex="0" class="font-questrial">
       <AccordionTab>
         <template #header>
