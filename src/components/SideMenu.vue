@@ -36,10 +36,18 @@
       <div
         class="bg-black text-white flex justify-center w-60 h-48 items-center rounded-2xl mt-16 2xl:mt-32 bg-gradient-to-br to-neutral-950 to-1% via-[#2b2b2b] via-65% from-neutral-950"
       >
-        <div class="w-44 h-32">
+        <div class="w-44 h-32 relative">
           <ProductPackage class="mb-4" />
           <h3 class="text-lg">Novos produtos</h3>
-          <p>Aumentar a variedade do eccomerce</p>
+          <p>Aumentar a variedade do e-commerce</p>
+          <div class="absolute left-36 -bottom-4">
+            <Button
+              icon="pi pi-arrow-right"
+              severity="secondary"
+              text
+              class="text-white hover:text-black h-8"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -61,7 +69,6 @@ function toggle() {
     showMenuBtn.value = false
     return
   }
-  // showMenuBtn.value = true
   setTimeout(() => {
     showMenuBtn.value = true
   }, 300)
