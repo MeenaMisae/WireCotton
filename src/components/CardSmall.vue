@@ -1,10 +1,10 @@
 <template>
-  <div class="shadow-md border w-40 h-36 flex items-center justify-center flex-col">
+  <div class="shadow-md border lg:w-40 h-36 w-42 flex items-center justify-center flex-col">
     <div class="flex items-center justify-center">
       <component :is="iconComponent" />
       <span class="text-3xl ml-2 font-semibold">{{ quantity }}</span>
     </div>
-    <p class="text-xl mt-3">{{ title }}</p>
+    <p class="lg:text-xl text-2xl mt-3">{{ title }}</p>
   </div>
 </template>
 
