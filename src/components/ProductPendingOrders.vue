@@ -21,19 +21,21 @@
                 <ProductPriceIcon />
                 160,00
               </span>
-              <span class="mr-3">detalhes</span>
+              <span class="mr-3 hidden lg:block md:block">detalhes</span>
             </div>
           </div>
         </template>
         <div class="px-2">
           <div class="flex">
-            <div class="w-full space-y-3 px-4">
+            <div class="min-w-full lg:min-w-fit md:min-w-fit space-y-3 px-4">
               <p><span class="mr-3">3x</span> Camisa algodão preta</p>
               <p><span class="mr-3">1x</span> Calça moletom verde</p>
             </div>
-            <div class="flex self-end justify-end w-full items-center space-x-3">
-              <p class="font-semibold">pedido completo</p>
-              <ArrowRightIcon />
+            <div
+              class="flex self-end justify-end w-full items-center lg:space-x-3 md:space-x-3 relative lg:static md:static"
+            >
+              <p class="font-semibold hidden lg:block md:block">pedido completo</p>
+              <ArrowRightIcon class="lg:static absolute right-3 bottom-0.5 md:static" />
             </div>
           </div>
         </div>
@@ -51,19 +53,21 @@
                 <ProductPriceIcon />
                 160,00
               </span>
-              <span class="mr-3">detalhes</span>
+              <span class="mr-3 hidden lg:block md:block">detalhes</span>
             </div>
           </div>
         </template>
         <div class="px-2">
           <div class="flex">
-            <div class="w-full space-y-3 px-4">
+            <div class="min-w-full lg:min-w-fit md:min-w-fit space-y-3 px-4">
               <p><span class="mr-3">3x</span> Camisa algodão preta</p>
               <p><span class="mr-3">1x</span> Calça moletom verde</p>
             </div>
-            <div class="flex self-end justify-end w-full items-center space-x-3">
-              <p class="font-semibold">pedido completo</p>
-              <ArrowRightIcon />
+            <div
+              class="flex self-end justify-end w-full items-center lg:space-x-3 md:space-x-3 relative lg:static md:static"
+            >
+              <p class="font-semibold hidden lg:block md:block">pedido completo</p>
+              <ArrowRightIcon class="lg:static absolute right-3 bottom-0.5 md:static" />
             </div>
           </div>
         </div>
@@ -81,19 +85,21 @@
                 <ProductPriceIcon />
                 160,00
               </span>
-              <span class="mr-3">detalhes</span>
+              <span class="mr-3 hidden lg:block md:block">detalhes</span>
             </div>
           </div>
         </template>
         <div class="px-2">
           <div class="flex">
-            <div class="w-full space-y-3 px-4">
+            <div class="min-w-full lg:min-w-fit md:min-w-fit space-y-3 px-4">
               <p><span class="mr-3">3x</span> Camisa algodão preta</p>
               <p><span class="mr-3">1x</span> Calça moletom verde</p>
             </div>
-            <div class="flex self-end justify-end w-full items-center space-x-3">
-              <p class="font-semibold">pedido completo</p>
-              <ArrowRightIcon />
+            <div
+              class="flex self-end justify-end w-full items-center lg:space-x-3 md:space-x-3 relative lg:static md:static"
+            >
+              <p class="font-semibold hidden lg:block md:block">pedido completo</p>
+              <ArrowRightIcon class="lg:static absolute right-3 bottom-0.5 md:static" />
             </div>
           </div>
         </div>
@@ -111,19 +117,21 @@
                 <ProductPriceIcon />
                 160,00
               </span>
-              <span class="mr-3">detalhes</span>
+              <span class="mr-3 hidden lg:block md:block">detalhes</span>
             </div>
           </div>
         </template>
         <div class="px-2">
           <div class="flex">
-            <div class="w-full space-y-3 px-4">
+            <div class="min-w-full lg:min-w-fit md:min-w-fit space-y-3 px-4">
               <p><span class="mr-3">3x</span> Camisa algodão preta</p>
               <p><span class="mr-3">1x</span> Calça moletom verde</p>
             </div>
-            <div class="flex self-end justify-end w-full items-center space-x-3">
-              <p class="font-semibold">pedido completo</p>
-              <ArrowRightIcon />
+            <div
+              class="flex self-end justify-end w-full items-center lg:space-x-3 md:space-x-3 relative lg:static md:static"
+            >
+              <p class="font-semibold hidden lg:block md:block">pedido completo</p>
+              <ArrowRightIcon class="lg:static absolute right-3 bottom-0.5 md:static" />
             </div>
           </div>
         </div>
@@ -141,19 +149,21 @@
                 <ProductPriceIcon />
                 160,00
               </span>
-              <span class="mr-3">detalhes</span>
+              <span class="mr-3 hidden lg:block md:block">detalhes</span>
             </div>
           </div>
         </template>
         <div class="px-2">
           <div class="flex">
-            <div class="w-full space-y-3 px-4">
+            <div class="min-w-full lg:min-w-fit md:min-w-fit space-y-3 px-4">
               <p><span class="mr-3">3x</span> Camisa algodão preta</p>
               <p><span class="mr-3">1x</span> Calça moletom verde</p>
             </div>
-            <div class="flex self-end justify-end w-full items-center space-x-3">
-              <p class="font-semibold">pedido completo</p>
-              <ArrowRightIcon />
+            <div
+              class="flex self-end justify-end w-full items-center lg:space-x-3 md:space-x-3 relative lg:static md:static"
+            >
+              <p class="font-semibold hidden lg:block md:block">pedido completo</p>
+              <ArrowRightIcon class="lg:static absolute right-3 bottom-0.5 md:static" />
             </div>
           </div>
         </div>
