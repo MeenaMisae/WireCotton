@@ -1,14 +1,17 @@
 <template>
-  <div :class="{ 'w-0': showMenuBtn, 'mr-0': !showMenuBtn }">
-    <div class="mt-[2.4rem]" v-if="showMenuBtn">
+  <div :class="{ 'w-0': showMenuBtn, 'mr-0': !showMenuBtn, hidden: appear }" v-show="showMenuBtn">
+    <div class="lg:mt-[2.4rem] mt-[1.6rem]">
       <Button plain text @click="toggle" class="rotate-180">
         <ChevronLeft />
       </Button>
     </div>
   </div>
-  <transition name="slide-fade">
-    <div class="py-9 w-72 shadow-lg px-5 min-h-screen" v-if="appear">
-      <div class="flex items-center justify-between w-56 ml-4">
+  <transition :name="slideFade">
+    <div
+      class="py-9 lg:w-72 shadow-lg px-5 lg:min-h-screen min-w-full lg:min-w-fit"
+      v-show="appear"
+    >
+      <div class="flex items-center justify-between lg:w-56 ml-4">
         <h1 class="text-3xl">wire: cotton</h1>
         <Button plain text @click="toggle">
           <ChevronLeft />
@@ -58,20 +61,22 @@
 import ProductPackage from '@/components/icons/ProductPackage.vue'
 import ChevronLeft from '@/components/icons/ChevronLeft.vue'
 import Button from 'primevue/button'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
-const appear = ref(true)
-const showMenuBtn = ref(false)
-
-function toggle() {
+const appear = ref(false)
+const showMenuBtn = ref(true)
+const slideFade = ref('')
+onMounted(() => {
+  detectWindowSize()
+  window.addEventListener('resize', detectWindowSize)
+})
+const detectWindowSize = () => {
+  appear.value = window.innerWidth >= 1200
+}
+const toggle = () => {
   appear.value = !appear.value
-  if (showMenuBtn.value) {
-    showMenuBtn.value = false
-    return
-  }
-  setTimeout(() => {
-    showMenuBtn.value = true
-  }, 300)
+  showMenuBtn.value = !appear.value
+  slideFade.value = 'slide-fade'
 }
 </script>
 
