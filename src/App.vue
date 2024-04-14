@@ -1,13 +1,13 @@
 <template>
-  <div class="h-screen">
+  <div class="h-screen overflow-x-hidden">
     <div class="flex">
       <SideMenu />
-      <div class="pr-10 pl-5 ml-8 w-[100%]">
+      <div class="lg:pr-10 lg:pl-5 lg:ml-8 w-[100%] px-6">
         <NavBar />
-        <div class="flex">
+        <div class="flex flex-col lg:flex-row">
           <div class="w-[100%]">
             <h3 class="text-2xl font-semibold mb-4">Resumos</h3>
-            <div class="flex space-x-8 w-full">
+            <div class="lg:flex flex-col lg:flex-row grid grid-cols-2 w-full gap-5">
               <CardSmall
                 v-for="resume in resumes"
                 :key="resume.title"
@@ -16,7 +16,7 @@
                 :icon="resume.icon"
               />
             </div>
-            <div class="mt-12 w-[100%]">
+            <div class="lg:mt-12 mt-8 w-[100%]">
               <div>
                 <ProductPendingOrders />
               </div>
