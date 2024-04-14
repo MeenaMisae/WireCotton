@@ -1,7 +1,7 @@
 <template>
-  <div class="flex justify-between py-8 text-xl items-center">
+  <div class="flex justify-between py-8 text-xl items-center ml-8 lg:ml-0">
     <div>Início</div>
-    <div class="flex items-center">
+    <div class="lg:flex items-center hidden">
       <Button plain text>
         <SearchLensIcon />
       </Button>
