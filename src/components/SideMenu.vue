@@ -1,43 +1,63 @@
 <template>
   <div :class="{ 'w-0': showMenuBtn, 'mr-0': !showMenuBtn, hidden: appear }" v-show="showMenuBtn">
     <div class="lg:mt-[2.4rem] mt-[1.6rem]">
-      <Button plain text @click="toggle" class="rotate-180">
+      <Button plain text @click="toggleMenu" class="rotate-180">
         <ChevronLeft />
       </Button>
     </div>
   </div>
   <transition :name="slideFade">
     <div
-      class="py-9 lg:w-72 shadow-lg px-5 lg:min-h-screen min-w-full lg:min-w-fit"
+      class="lg:py-9 py-5 lg:w-72 shadow-lg px-5 lg:min-h-screen min-w-full lg:min-w-fit h-svh"
       v-show="appear"
     >
       <div class="flex items-center justify-between lg:w-56 ml-4">
         <h1 class="text-3xl">wire: cotton</h1>
-        <Button plain text @click="toggle">
+        <Button plain text @click="toggleMenu">
           <ChevronLeft />
         </Button>
       </div>
       <div class="mt-14 ml-4">
         <ul class="space-y-12">
-          <li class="text-xl">
+          <li class="text-2xl lg:text-xl">
             <a href="">Início</a>
           </li>
-          <li class="text-xl">
+          <li class="text-2xl lg:text-xl">
             <a href="">Produtos</a>
           </li>
-          <li class="text-xl">
+          <li class="text-2xl lg:text-xl">
             <a href="">Categorias</a>
           </li>
-          <li class="text-xl">
+          <li class="text-2xl lg:text-xl">
             <a href="">Pedidos</a>
           </li>
-          <li class="text-xl">
+          <li class="text-2xl lg:text-xl">
             <a href="">Clientes</a>
           </li>
         </ul>
       </div>
+      <div class="grid grid-rows-2">
+        <div class="lg:hidden divide-y-2 space-y-4 row-start-2">
+          <div class="flex items-center">
+            <Button plain text class="gap-x-3">
+              <i class="pi pi-cog text-xl"></i>
+              <span class="font-questrial">Configurações</span>
+            </Button>
+          </div>
+          <div class="flex pt-4 gap-x-3 ml-4">
+            <Avatar label="MM" class="h-12 w-12 text-xl font-questrial" shape="circle" />
+            <div class="flex items-center gap-3">
+              <div class="flex flex-col">
+                <span class="text-lg">Meena</span>
+                <span>meenamisae@gmail.com</span>
+              </div>
+              <i class="pi pi-angle-right text-xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
       <div
-        class="bg-black text-white flex justify-center w-60 h-48 items-center rounded-2xl mt-16 2xl:mt-32 bg-gradient-to-br to-neutral-950 to-1% via-[#2b2b2b] via-65% from-neutral-950"
+        class="bg-black text-white justify-center w-60 h-48 items-center rounded-2xl mt-16 2xl:mt-32 bg-gradient-to-br to-neutral-950 to-1% via-[#2b2b2b] via-65% from-neutral-950 hidden lg:flex"
       >
         <div class="w-44 h-32 relative">
           <ProductPackage class="mb-4" />
@@ -62,10 +82,13 @@ import ProductPackage from '@/components/icons/ProductPackage.vue'
 import ChevronLeft from '@/components/icons/ChevronLeft.vue'
 import Button from 'primevue/button'
 import { ref, onMounted } from 'vue'
+import Avatar from 'primevue/avatar'
 
 const appear = ref(false)
 const showMenuBtn = ref(true)
 const slideFade = ref('')
+const emit = defineEmits(['visibleSideMenu'])
+
 onMounted(() => {
   detectWindowSize()
   window.addEventListener('resize', detectWindowSize)
@@ -73,8 +96,9 @@ onMounted(() => {
 const detectWindowSize = () => {
   appear.value = window.innerWidth >= 1200
 }
-const toggle = () => {
+const toggleMenu = () => {
   appear.value = !appear.value
+  appear.value ? emit('visibleSideMenu', true) : emit('visibleSideMenu', false)
   showMenuBtn.value = !appear.value
   slideFade.value = 'slide-fade'
 }
