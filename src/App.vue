@@ -1,7 +1,7 @@
 <template>
-  <div class="h-screen overflow-x-hidden">
+  <div class="h-screen lg:overflow-auto" :class="{ 'overflow-hidden': hide }">
     <div class="flex">
-      <SideMenu />
+      <SideMenu @visible-side-menu="hideOverflow" />
       <div class="lg:pr-10 lg:pl-5 lg:ml-8 w-[100%] px-6">
         <NavBar />
         <div class="flex flex-col lg:flex-row">
@@ -38,6 +38,10 @@ import { ref } from 'vue'
 import ProductPendingOrders from './components/ProductPendingOrders.vue'
 import ProductsBestSelling from './components/ProductsBestSelling.vue'
 
+const hide = ref()
+function hideOverflow(event: boolean) {
+  hide.value = event
+}
 const resumes = ref([
   { title: 'Produtos', quantity: 22, icon: 'ProductPackageBlack' },
   { title: 'Categorias', quantity: 5, icon: 'ProductCategoryTag' },
