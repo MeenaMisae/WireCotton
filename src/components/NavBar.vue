@@ -6,7 +6,7 @@
         <SearchLensIcon />
       </Button>
       <Button plain text @click="toggleNotifications">
-        <NotificationBellIcon v-badge.contrast />
+        <NotificationBellIcon v-badge.contrast :width="24" :height="24" />
       </Button>
       <OverlayPanel ref="openNotifications" class="ml-2"> <div>Notificações</div> </OverlayPanel>
 
