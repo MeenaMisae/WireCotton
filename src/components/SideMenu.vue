@@ -8,51 +8,66 @@
   </div>
   <transition :name="slideFade">
     <div
-      class="lg:py-9 py-5 lg:w-72 shadow-lg px-5 lg:min-h-screen min-w-full lg:min-w-fit h-svh"
+      class="lg:py-9 py-5 lg:w-72 shadow-lg px-5 lg:min-h-screen min-w-full lg:min-w-fit h-svh lg:h-auto"
       v-show="appear"
     >
-      <div class="flex items-center justify-between lg:w-56 ml-4">
-        <h1 class="text-3xl">wire: cotton</h1>
-        <Button plain text @click="toggleMenu">
-          <ChevronLeft />
-        </Button>
+      <div class="h-[80%] lg:h-auto">
+        <div class="flex items-center justify-between lg:w-56 ml-4">
+          <h1 class="text-3xl">wire: cotton</h1>
+          <Button plain text @click="toggleMenu">
+            <ChevronLeft />
+          </Button>
+        </div>
+        <div class="mt-14 ml-4">
+          <ul class="space-y-12">
+            <li class="text-2xl lg:text-xl">
+              <a href="">Início</a>
+            </li>
+            <li class="text-2xl lg:text-xl">
+              <a href="">Produtos</a>
+            </li>
+            <li class="text-2xl lg:text-xl">
+              <a href="">Categorias</a>
+            </li>
+            <li class="text-2xl lg:text-xl">
+              <a href="">Pedidos</a>
+            </li>
+            <li class="text-2xl lg:text-xl">
+              <a href="">Clientes</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="mt-14 ml-4">
-        <ul class="space-y-12">
-          <li class="text-2xl lg:text-xl">
-            <a href="">Início</a>
-          </li>
-          <li class="text-2xl lg:text-xl">
-            <a href="">Produtos</a>
-          </li>
-          <li class="text-2xl lg:text-xl">
-            <a href="">Categorias</a>
-          </li>
-          <li class="text-2xl lg:text-xl">
-            <a href="">Pedidos</a>
-          </li>
-          <li class="text-2xl lg:text-xl">
-            <a href="">Clientes</a>
-          </li>
-        </ul>
-      </div>
-      <div class="grid grid-rows-2">
-        <div class="lg:hidden divide-y-2 space-y-4 row-start-2">
-          <div class="flex items-center">
+      <div>
+        <div class="lg:hidden divide-y-2 px-1 space-y-4">
+          <div class="flex items-center justify-between px-1">
             <Button plain text class="gap-x-3">
               <i class="pi pi-cog text-xl"></i>
               <span class="font-questrial">Configurações</span>
             </Button>
+            <Button plain text>
+              <NotificationBellIcon v-badge.contrast :width="20" :height="20" />
+            </Button>
           </div>
-          <div class="flex pt-4 gap-x-3 ml-4">
-            <Avatar label="MM" class="h-12 w-12 text-xl font-questrial" shape="circle" />
-            <div class="flex items-center gap-3">
-              <div class="flex flex-col">
-                <span class="text-lg">Meena</span>
-                <span>meenamisae@gmail.com</span>
+          <div class="pt-4">
+            <Button
+              plain
+              text
+              class="font-questrial flex justify-between min-w-[100%] text-left items-center pl-2 pr-4"
+            >
+              <div class="flex items-center gap-5">
+                <div>
+                  <Avatar label="MM" class="h-12 w-12 text-xl font-questrial" shape="circle" />
+                </div>
+                <div class="flex flex-col justify-start">
+                  <span class="text-lg">Meena</span>
+                  <span>meenamisae@gmail.com</span>
+                </div>
               </div>
-              <i class="pi pi-angle-right text-xl"></i>
-            </div>
+              <div class="flex items-center">
+                <i class="pi pi-angle-right text-xl"></i>
+              </div>
+            </Button>
           </div>
         </div>
       </div>
@@ -80,6 +95,7 @@
 <script setup lang="ts">
 import ProductPackage from '@/components/icons/ProductPackage.vue'
 import ChevronLeft from '@/components/icons/ChevronLeft.vue'
+import NotificationBellIcon from './icons/NotificationBellIcon.vue'
 import Button from 'primevue/button'
 import { ref, onMounted } from 'vue'
 import Avatar from 'primevue/avatar'
@@ -95,6 +111,9 @@ onMounted(() => {
 })
 const detectWindowSize = () => {
   appear.value = window.innerWidth >= 1200
+  if (!appear.value) {
+    showMenuBtn.value = true
+  }
 }
 const toggleMenu = () => {
   appear.value = !appear.value
