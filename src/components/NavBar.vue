@@ -1,6 +1,20 @@
 <template>
   <div class="flex justify-between py-8 text-xl items-center ml-8 lg:ml-0">
-    <div>Início</div>
+    <div>
+      <Breadcrumb :model="elements" class="font-questrial text-[23px] p-0">
+        <template #item="{ item, props }">
+          <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+            <a :href="href" v-bind="props.action" @click="navigate">
+              <span :class="[item.icon, 'text-color']" />
+              <span class="text-primary font-semibold">{{ item.label }}</span>
+            </a>
+          </router-link>
+          <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+            <span class="text-color">{{ item.label }}</span>
+          </a>
+        </template>
+      </Breadcrumb>
+    </div>
     <div class="lg:flex items-center hidden">
       <Button plain text>
         <SearchLensIcon />
@@ -21,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { watch, ref } from 'vue'
 import OverlayPanel from 'primevue/overlaypanel'
 import Avatar from 'primevue/avatar'
 import TieredMenu from 'primevue/tieredmenu'
@@ -29,11 +43,26 @@ import Button from 'primevue/button'
 import ChevronLeft from '@/components/icons/ChevronLeft.vue'
 import SearchLensIcon from './icons/SearchLensIcon.vue'
 import NotificationBellIcon from './icons/NotificationBellIcon.vue'
+import Breadcrumb from 'primevue/breadcrumb'
+import { useRoute } from 'vue-router'
 
+defineProps({
+  title: String
+})
 const openNotifications = ref()
 const toggleNotifications = (event) => {
   openNotifications.value.toggle(event)
 }
+const route = useRoute()
+const elements = ref([])
+watch(route, (newRoute) => {
+  const newElements = []
+  const breadcumb = newRoute.meta.breadcumb
+  breadcumb.forEach((item) => {
+    newElements.push({ label: item.name, route: item.link })
+    elements.value = newElements
+  })
+})
 const menu = ref()
 const items = ref([
   {
