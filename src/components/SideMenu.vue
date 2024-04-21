@@ -20,20 +20,20 @@
         </div>
         <div class="mt-14 ml-4">
           <ul class="space-y-12">
-            <li class="text-2xl lg:text-xl">
-              <a href="">Início</a>
+            <li class="text-2xl lg:text-xl menu-item">
+              <RouterLink to="/">Início</RouterLink>
             </li>
-            <li class="text-2xl lg:text-xl">
-              <a href="">Produtos</a>
+            <li class="text-2xl lg:text-xl menu-item">
+              <RouterLink to="/products">Produtos</RouterLink>
             </li>
-            <li class="text-2xl lg:text-xl">
-              <a href="">Categorias</a>
+            <li class="text-2xl lg:text-xl menu-item">
+              <RouterLink to="/categories">Categorias</RouterLink>
             </li>
-            <li class="text-2xl lg:text-xl">
-              <a href="">Pedidos</a>
+            <li class="text-2xl lg:text-xl menu-item">
+              <RouterLink to="/orders">Pedidos</RouterLink>
             </li>
-            <li class="text-2xl lg:text-xl">
-              <a href="">Clientes</a>
+            <li class="text-2xl lg:text-xl menu-item">
+              <RouterLink to="/clients">Clientes</RouterLink>
             </li>
           </ul>
         </div>
@@ -79,12 +79,14 @@
           <h3 class="text-lg">Novos produtos</h3>
           <p>Aumentar a variedade do e-commerce</p>
           <div class="absolute left-36 -bottom-4">
-            <Button
-              icon="pi pi-arrow-right"
-              severity="secondary"
-              text
-              class="text-white hover:text-black h-8"
-            />
+            <router-link to="/products/create">
+              <Button
+                icon="pi pi-arrow-right"
+                severity="secondary"
+                text
+                class="text-white hover:text-black h-8"
+              />
+            </router-link>
           </div>
         </div>
       </div>
@@ -108,6 +110,12 @@ const emit = defineEmits(['visibleSideMenu'])
 onMounted(() => {
   detectWindowSize()
   window.addEventListener('resize', detectWindowSize)
+  const listItems = document.getElementsByClassName('menu-item')
+  Array.from(listItems).forEach((item) => {
+    item.addEventListener('click', () => {
+      toggleMenu()
+    })
+  })
 })
 const detectWindowSize = () => {
   appear.value = window.innerWidth >= 1200
