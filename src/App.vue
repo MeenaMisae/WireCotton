@@ -1,7 +1,7 @@
 <template>
-  <div class="h-screen lg:overflow-auto" :class="{ 'overflow-hidden': hide }">
+  <div class="h-screen lg:overflow-auto">
     <div class="flex">
-      <SideMenu @visible-side-menu="hideOverflow" />
+      <SideMenu />
       <div class="lg:pr-10 lg:pl-5 lg:ml-8 w-[100%] px-6">
         <NavBar />
         <router-view v-slot="{ Component, route }">

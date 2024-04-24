@@ -106,13 +106,22 @@ const appear = ref(false)
 const showMenuBtn = ref(true)
 const slideFade = ref('')
 const emit = defineEmits(['visibleSideMenu'])
-let windowWidth = ref(window.innerWidth)
+let windowWidth = window.innerWidth
 
-const onWidthChange = () => {
-  windowWidth.value = window.innerWidth
-}
-watch(windowWidth, () => {
-  if (windowWidth.value < 1200) {
+// const onWidthChange = () => {
+//   windowWidth.value = window.innerWidth
+// }
+// watch(windowWidth, () => {
+
+// })
+onMounted(() => {
+  detectWindowSize()
+  window.addEventListener('resize', detectWindowSize)
+  // window.addEventListener('resize', onWidthChange)
+})
+// onUnmounted(() => window.removeEventListener('resize', onWidthChange))
+const detectWindowSize = () => {
+  if (windowWidth < 1200) {
     const listItems = document.getElementsByClassName('menu-item')
     Array.from(listItems).forEach((item) => {
       item.addEventListener('click', toggleMenu)
@@ -123,14 +132,6 @@ watch(windowWidth, () => {
       item.removeEventListener('click', toggleMenu)
     })
   }
-})
-onMounted(() => {
-  detectWindowSize()
-  window.addEventListener('resize', detectWindowSize)
-  window.addEventListener('resize', onWidthChange)
-})
-onUnmounted(() => window.removeEventListener('resize', onWidthChange))
-const detectWindowSize = () => {
   appear.value = window.innerWidth >= 1200
   if (!appear.value) {
     showMenuBtn.value = true
