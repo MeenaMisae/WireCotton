@@ -99,24 +99,37 @@ import ProductPackage from '@/components/icons/ProductPackage.vue'
 import ChevronLeft from '@/components/icons/ChevronLeft.vue'
 import NotificationBellIcon from './icons/NotificationBellIcon.vue'
 import Button from 'primevue/button'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Avatar from 'primevue/avatar'
 
 const appear = ref(false)
 const showMenuBtn = ref(true)
 const slideFade = ref('')
 const emit = defineEmits(['visibleSideMenu'])
+let windowWidth = ref(window.innerWidth)
 
+const onWidthChange = () => {
+  windowWidth.value = window.innerWidth
+}
+watch(windowWidth, () => {
+  if (windowWidth.value < 1200) {
+    const listItems = document.getElementsByClassName('menu-item')
+    Array.from(listItems).forEach((item) => {
+      item.addEventListener('click', toggleMenu)
+    })
+  } else {
+    const listItems = document.getElementsByClassName('menu-item')
+    Array.from(listItems).forEach((item) => {
+      item.removeEventListener('click', toggleMenu)
+    })
+  }
+})
 onMounted(() => {
   detectWindowSize()
   window.addEventListener('resize', detectWindowSize)
-  const listItems = document.getElementsByClassName('menu-item')
-  Array.from(listItems).forEach((item) => {
-    item.addEventListener('click', () => {
-      toggleMenu()
-    })
-  })
+  window.addEventListener('resize', onWidthChange)
 })
+onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 const detectWindowSize = () => {
   appear.value = window.innerWidth >= 1200
   if (!appear.value) {
