@@ -3,13 +3,13 @@
     <div class="w-[100%]">
       <h3 class="text-2xl font-semibold mb-4">Resumos</h3>
       <div class="lg:flex flex-col lg:flex-row grid grid-cols-2 w-full gap-5">
-        <!-- <CardSmall
+        <CardSmall
           v-for="resume in resumes"
           :key="resume.title"
           :title="resume.title"
           :quantity="resume.quantity"
           :icon="resume.icon"
-        /> -->
+        />
       </div>
       <div class="lg:mt-12 mt-8 w-[100%]">
         <div>
