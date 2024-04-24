@@ -8,7 +8,7 @@
   </div>
   <transition :name="slideFade">
     <div
-      class="lg:py-9 py-5 lg:w-72 shadow-lg px-5 lg:min-h-screen min-w-full lg:min-w-fit h-svh lg:h-auto"
+      class="lg:py-9 py-5 lg:w-72 shadow-lg px-5 lg:min-h-screen min-w-full lg:min-w-fit max-h-screen lg:max-h-full lg:h-auto overflow-hidden"
       v-show="appear"
     >
       <div class="h-[80%] lg:h-auto">
