@@ -134,10 +134,10 @@ const detectWindowSize = () => {
       item.removeEventListener('click', toggleMenu)
     })
   }
-  appear.value = window.innerWidth >= 1200
-  if (!appear.value) {
-    showMenuBtn.value = true
-  }
+  // appear.value = window.innerWidth >= 1200
+  //   if (!appear.value) {
+  //     showMenuBtn.value = true
+  //   }
 }
 const toggleMenu = () => {
   appear.value = !appear.value
