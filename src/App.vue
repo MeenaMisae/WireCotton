@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen lg:overflow-auto">
+  <div class="h-screen overflow-auto">
     <div class="flex">
       <SideMenu />
       <div class="lg:pr-10 lg:pl-5 lg:ml-8 w-[100%] px-6">
