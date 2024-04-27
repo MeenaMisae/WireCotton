@@ -1,5 +1,7 @@
 <template>
-  <div class="flex justify-between py-8 text-xl items-center ml-8 lg:ml-0">
+  <div
+    class="flex justify-between lg:h-auto lg:py-8 h-14 text-xl items-center ml-8 lg:ml-0 sticky top-0 z-50 lg:static bg-[#FFFFFF]"
+  >
     <div>
       <Breadcrumb :model="elements" class="font-questrial text-[23px] p-0">
         <template #item="{ item, props }">
