@@ -9,7 +9,7 @@
           plain
           text
           @click="toggleMenu"
-          class="flex items-center bg-[#FFFFFF] h-14 lg:h-auto"
+          class="flex items-center bg-[#FFFFFF] h-[3.5rem] lg:h-auto"
         >
           <div class="hidden lg:flex rotate-180">
             <ChevronLeft />
