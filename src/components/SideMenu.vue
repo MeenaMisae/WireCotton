@@ -1,15 +1,46 @@
 <template>
-  <div class="h-screen min-w-[100%] lg:min-w-fit lg:min-h-screen" :class="{ 'min-w-fit': !appear }">
+  <div
+    class="h-screen min-w-[100%] lg:min-w-fit lg:min-h-screen sticky top-0 z-50 lg:static bg-[#FFFFFF]"
+    :class="{ 'min-w-fit': !appear }"
+  >
     <div :class="{ 'w-0': showMenuBtn, 'mr-0': !showMenuBtn, hidden: appear }" v-show="showMenuBtn">
-      <div class="lg:mt-[2.4rem] mt-[1.6rem]">
-        <Button plain text @click="toggleMenu" class="rotate-180">
-          <ChevronLeft />
+      <div class="lg:mt-[2.4rem]">
+        <Button
+          plain
+          text
+          @click="toggleMenu"
+          class="flex items-center bg-[#FFFFFF] h-14 lg:h-auto"
+        >
+          <div class="hidden lg:flex rotate-180">
+            <ChevronLeft />
+          </div>
+          <div class="flex lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-menu-deep"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 6h16" />
+              <path d="M7 12h13" />
+              <path d="M10 18h10" />
+            </svg>
+          </div>
         </Button>
       </div>
     </div>
+
     <transition :name="slideFade">
       <div
         class="lg:py-9 py-5 lg:w-72 shadow-lg px-5 fixed top-0 left-0 w-screen h-screen lg:static"
+        :class="{ 'lg:fixed': !appear }"
         v-show="appear"
       >
         <div class="h-[80%] lg:h-[70%]">
@@ -101,29 +132,21 @@ import ProductPackage from '@/components/icons/ProductPackage.vue'
 import ChevronLeft from '@/components/icons/ChevronLeft.vue'
 import NotificationBellIcon from './icons/NotificationBellIcon.vue'
 import Button from 'primevue/button'
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import Avatar from 'primevue/avatar'
 
 const appear = ref(false)
 const showMenuBtn = ref(true)
 const slideFade = ref('')
 const emit = defineEmits(['visibleSideMenu'])
-let windowWidth = window.innerWidth
+let windowWidth = ref(window.innerWidth)
 
-// const onWidthChange = () => {
-//   windowWidth.value = window.innerWidth
-// }
-// watch(windowWidth, () => {
-
-// })
 onMounted(() => {
   detectWindowSize()
   window.addEventListener('resize', detectWindowSize)
-  // window.addEventListener('resize', onWidthChange)
 })
-// onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 const detectWindowSize = () => {
-  if (windowWidth < 1200) {
+  if (windowWidth.value < 1200) {
     const listItems = document.getElementsByClassName('menu-item')
     Array.from(listItems).forEach((item) => {
       item.addEventListener('click', toggleMenu)
@@ -133,11 +156,8 @@ const detectWindowSize = () => {
     Array.from(listItems).forEach((item) => {
       item.removeEventListener('click', toggleMenu)
     })
+    appear.value = true
   }
-  // appear.value = window.innerWidth >= 1200
-  //   if (!appear.value) {
-  //     showMenuBtn.value = true
-  //   }
 }
 const toggleMenu = () => {
   appear.value = !appear.value
@@ -159,5 +179,6 @@ const toggleMenu = () => {
 .slide-fade-enter-from,
 .slide-fade-leave-to {
   transform: translateX(-100%);
+  opacity: 0;
 }
 </style>
