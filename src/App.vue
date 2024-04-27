@@ -6,7 +6,7 @@
         <NavBar />
         <router-view v-slot="{ Component, route }">
           <Transition name="fade" mode="out-in">
-            <div :key="route.path">
+            <div :key="route.path" class="my-4 lg:my-0">
               <component :is="Component"></component>
             </div>
           </Transition>
