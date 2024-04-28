@@ -53,19 +53,19 @@
           <div class="mt-14 ml-4">
             <ul class="space-y-12">
               <li class="text-2xl lg:text-xl menu-item">
-                <RouterLink to="/">Início</RouterLink>
+                <RouterLink activeClass="font-semibold" to="/">Início</RouterLink>
               </li>
               <li class="text-2xl lg:text-xl menu-item">
-                <RouterLink to="/products">Produtos</RouterLink>
+                <RouterLink activeClass="font-semibold" to="/products">Produtos</RouterLink>
               </li>
               <li class="text-2xl lg:text-xl menu-item">
-                <RouterLink to="/categories">Categorias</RouterLink>
+                <RouterLink activeClass="font-semibold" to="/categories">Categorias</RouterLink>
               </li>
               <li class="text-2xl lg:text-xl menu-item">
-                <RouterLink to="/orders">Pedidos</RouterLink>
+                <RouterLink activeClass="font-semibold" to="/orders">Pedidos</RouterLink>
               </li>
               <li class="text-2xl lg:text-xl menu-item">
-                <RouterLink to="/clients">Clientes</RouterLink>
+                <RouterLink activeClass="font-semibold" to="/clients">Clientes</RouterLink>
               </li>
             </ul>
           </div>
