@@ -71,8 +71,8 @@
           </div>
         </div>
         <div>
-          <div class="lg:hidden divide-y-2 px-1 space-y-4">
-            <div class="flex items-center justify-between px-1">
+          <div class="lg:hidden divide-y-2 space-y-4">
+            <div class="flex items-center justify-between">
               <Button plain text class="gap-x-3">
                 <i class="pi pi-cog text-xl"></i>
                 <span class="font-questrial">Configurações</span>
