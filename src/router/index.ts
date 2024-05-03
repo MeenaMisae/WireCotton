@@ -26,7 +26,7 @@ const router = createRouter({
         breadcumb: [
           { name: 'Início', link: '/' },
           { name: 'Produtos', link: '/products' },
-          { name: 'Novo Produto' }
+          { name: 'Novo' }
         ]
       }
     },
