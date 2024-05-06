@@ -12,3 +12,12 @@
 :root {
   font-family: 'Questrial', sans-serif !important;
 }
+
+.p-component,
+.p-inputtext {
+  font-family: inherit;
+}
+
+.p-placeholder {
+  color: #959595;
+}
