@@ -67,7 +67,7 @@
           <div class="flex flex-col gap-y-3">
             <label for="minmax-buttons">Quantidade</label>
             <InputNumber
-              v-model="value2"
+              v-model.number="value2"
               inputId="minmax-buttons"
               mode="decimal"
               showButtons
