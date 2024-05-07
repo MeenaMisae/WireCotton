@@ -54,22 +54,23 @@
         </div>
         <div class="flex gap-x-5">
           <div class="flex flex-col gap-y-3">
-            <label for="stacked-buttons">Preço</label>
+            <label for="price">Preço</label>
             <InputNumber
               v-model="value1"
-              inputId="stacked-buttons"
+              inputId="price"
               mode="currency"
+              showButtons
               currency="BRL"
-              locale="pt-BR"
               class="h-12 product-price"
             />
           </div>
           <div class="flex flex-col gap-y-3">
-            <label for="minmax-buttons">Quantidade</label>
+            <label for="quantity">Quantidade</label>
             <InputNumber
               v-model.number="value2"
-              inputId="minmax-buttons"
+              inputId="quantity"
               mode="decimal"
+              showButtons
               :min="0"
               :max="100"
               class="h-12 product-quantity"
