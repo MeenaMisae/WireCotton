@@ -61,7 +61,7 @@
               showButtons
               mode="currency"
               currency="BRL"
-              class="h-12 product-price"
+              class="product-price"
             />
           </div>
           <div class="flex flex-col gap-y-3">
