@@ -54,14 +54,14 @@
         </div>
         <div class="flex gap-x-5">
           <div class="flex flex-col gap-y-3">
-            <label>Preço</label>
+            <label for="stacked-buttons">Preço</label>
             <InputNumber
               v-model="value1"
               inputId="stacked-buttons"
               showButtons
               mode="currency"
-              currency="USD"
-              class="product-price"
+              currency="BRL"
+              class="h-12 product-price"
             />
           </div>
           <div class="flex flex-col gap-y-3">
@@ -148,11 +148,11 @@ const items = ref([
   border-color: #94a3b8;
 }
 
-/* .product-price > .p-inputnumber-input {
+.product-price > .p-inputnumber-input {
   width: 50%;
 }
 
 .product-quantity > .p-inputnumber-input {
   width: 50%;
-} */
+}
 </style>
