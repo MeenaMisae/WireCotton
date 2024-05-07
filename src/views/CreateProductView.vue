@@ -61,6 +61,7 @@
               showButtons
               mode="currency"
               currency="BRL"
+              locale="pt-BR"
               class="h-12 product-price"
             />
           </div>
