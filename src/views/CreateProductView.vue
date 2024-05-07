@@ -58,7 +58,6 @@
             <InputNumber
               v-model="value1"
               inputId="stacked-buttons"
-              showButtons
               mode="currency"
               currency="BRL"
               locale="pt-BR"
@@ -71,7 +70,6 @@
               v-model.number="value2"
               inputId="minmax-buttons"
               mode="decimal"
-              showButtons
               :min="0"
               :max="100"
               class="h-12 product-quantity"
