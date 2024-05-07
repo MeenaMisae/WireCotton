@@ -60,7 +60,7 @@
               inputId="stacked-buttons"
               showButtons
               mode="currency"
-              currency="BRL"
+              currency="USD"
               class="product-price"
             />
           </div>
@@ -148,11 +148,11 @@ const items = ref([
   border-color: #94a3b8;
 }
 
-.product-price > .p-inputnumber-input {
+/* .product-price > .p-inputnumber-input {
   width: 50%;
 }
 
 .product-quantity > .p-inputnumber-input {
   width: 50%;
-}
+} */
 </style>
