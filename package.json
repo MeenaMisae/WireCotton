@@ -15,6 +15,7 @@
   "dependencies": {
     "primeicons": "^6.0.1",
     "primevue": "^3.50.0",
+    "v-money3": "^3.24.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
