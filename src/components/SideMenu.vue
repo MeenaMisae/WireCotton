@@ -12,7 +12,7 @@
           class="flex items-center bg-[#FFFFFF] h-[3.5rem] lg:h-auto"
         >
           <div class="hidden lg:flex rotate-180">
-            <ChevronLeft />
+            <ChevronLeft :width="20" :stroke="'#292929'" />
           </div>
           <div class="flex lg:hidden">
             <svg
@@ -47,7 +47,7 @@
           <div class="flex items-center justify-between lg:w-56 ml-4">
             <h1 class="text-3xl">wire: cotton</h1>
             <Button plain text @click="toggleMenu">
-              <ChevronLeft />
+              <ChevronLeft :width="20" :stroke="'#292929'" />
             </Button>
           </div>
           <div class="mt-14 ml-4">
