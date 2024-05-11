@@ -42,8 +42,8 @@
           <label for="">Subcategoria</label>
           <div class="card flex justify-content-center">
             <Dropdown
-              v-model="selectedCity"
-              :options="cities"
+              v-model="selectedSubcategory"
+              :options="subcategories"
               optionLabel="name"
               placeholder="Camisa"
               checkmark
@@ -53,35 +53,30 @@
           </div>
         </div>
         <div class="flex gap-x-5">
-          <div class="flex flex-col gap-y-3">
-            <label for="price">Preço</label>
-            <InputNumber
-              v-model="value1"
-              inputId="price"
-              mode="currency"
-              showButtons
-              currency="BRL"
-              class="h-12 product-price"
-            />
+          <div class="flex flex-col gap-y-3 w-[50%]">
+            <label for="amount">Preço</label>
+            <InputCurrency />
           </div>
-          <div class="flex flex-col gap-y-3">
+          <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="quantity">Quantidade</label>
-            <InputNumber
-              v-model.number="value2"
-              inputId="quantity"
-              mode="decimal"
-              showButtons
-              :min="0"
-              :max="100"
-              class="h-12 product-quantity"
-            />
+            <InputQuantity />
           </div>
         </div>
         <div class="flex flex-col gap-y-3">
           <span>Promoção</span>
           <div class="flex items-center gap-x-3">
             <Checkbox v-model="checked" :binary="true" />
-            <label for="">Produto promocional?</label>
+            <label for="" class="text-[#505050]">Produto promocional?</label>
+          </div>
+          <div v-show="checked">
+            <Slider v-model="discountValue" class="w-full" />
+            <div class="flex flex-col">
+              <span class="text-[#505050]">Desconto: {{ discountValue }}%</span>
+              <div class="flex gap-x-4 items-center">
+                <span class="text-[#505050]">Preço final com desconto: </span>
+                <span class="font-semibold text-lg">a</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -91,15 +86,18 @@
 
 <script setup>
 import { ref } from 'vue'
+
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
-import InputNumber from 'primevue/inputnumber'
 import Checkbox from 'primevue/checkbox'
+import Slider from 'primevue/slider'
+import InputQuantity from '@/components/InputQuantity.vue'
+import InputCurrency from '@/components/InputCurrency.vue'
 
+const discountValue = ref(0)
 const checked = ref(false)
 const selectedCategory = ref()
-const value1 = ref(0)
-const value2 = ref(25)
+
 const categories = ref([
   { name: 'Masculino', code: 'M' },
   { name: 'Feminino', code: 'F' },
@@ -146,13 +144,5 @@ const items = ref([
   outline: 1px solid #000000;
   outline-offset: -1px;
   border-color: #94a3b8;
-}
-
-.product-price > .p-inputnumber-input {
-  width: 50%;
-}
-
-.product-quantity > .p-inputnumber-input {
-  width: 50%;
 }
 </style>
