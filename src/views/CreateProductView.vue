@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5">
+  <div class="mt-5 lg:flex">
     <div class="px-7 lg:px-0">
       <div class="grid grid-cols-5 lg:grid-cols-1 gap-x-4">
         <StepItem
@@ -11,12 +11,12 @@
         />
       </div>
     </div>
-    <div class="mt-10">
+    <div class="mt-10 lg:mt-0">
       <span class="before:content-['*'] before:text-red-500 before:mr-2"
         >Todos os itens são obrigatórios</span
       >
-      <div class="mt-7 space-y-5">
-        <div class="flex flex-col gap-y-3">
+      <div class="mt-7 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2">
+        <div class="flex flex-col gap-y-3 lg:gap-0">
           <label for="">Nome do produto</label>
           <input
             type="text"
@@ -24,7 +24,7 @@
             placeholder="Camisa gola V"
           />
         </div>
-        <div class="flex flex-col gap-y-3">
+        <div class="flex flex-col gap-y-3 lg:gap-0">
           <label for="">Categoria</label>
           <div class="card flex justify-content-center">
             <Dropdown
@@ -38,7 +38,7 @@
             />
           </div>
         </div>
-        <div class="flex flex-col gap-y-3">
+        <div class="flex flex-col gap-y-3 lg:gap-0 lg:col-start-2">
           <label for="">Subcategoria</label>
           <div class="card flex justify-content-center">
             <Dropdown
@@ -52,32 +52,53 @@
             />
           </div>
         </div>
-        <div class="flex gap-x-5">
-          <div class="flex flex-col gap-y-3 w-[50%]">
+        <div class="flex gap-x-5 lg:row-start-2">
+          <div class="flex flex-col gap-y-3 w-[50%] lg:gap-0">
             <label for="amount">Preço</label>
             <InputCurrency />
           </div>
-          <div class="flex flex-col gap-y-3 w-[50%]">
+          <div class="flex flex-col gap-y-3 w-[50%] lg:gap-0">
             <label for="quantity">Quantidade</label>
             <InputQuantity />
           </div>
         </div>
-        <div class="flex flex-col gap-y-3">
+        <div class="flex flex-col gap-y-3 lg:gap-0">
           <span>Promoção</span>
           <div class="flex items-center gap-x-3">
-            <Checkbox v-model="checked" :binary="true" />
-            <label for="" class="text-[#505050]">Produto promocional?</label>
+            <Checkbox v-model="checked" :binary="true" inputId="discountCheckbox" />
+            <label for="discountCheckbox" class="text-[#505050]">Produto promocional?</label>
           </div>
-          <div v-show="checked">
-            <Slider v-model="discountValue" class="w-full" />
-            <div class="flex flex-col">
-              <span class="text-[#505050]">Desconto: {{ discountValue }}%</span>
-              <div class="flex gap-x-4 items-center">
-                <span class="text-[#505050]">Preço final com desconto: </span>
-                <span class="font-semibold text-lg">a</span>
+          <transition name="fade">
+            <div v-show="checked" class="space-y-3">
+              <Slider v-model="discountValue" class="w-full my-2" />
+              <div class="flex flex-col">
+                <span class="text-[#505050] mt-2">Desconto: {{ discountValue }}%</span>
+                <div class="flex gap-x-4 items-center">
+                  <span class="text-[#505050]">Preço final com desconto: </span>
+                  <span class="font-semibold text-lg tracking-wider">R$23,50</span>
+                </div>
               </div>
             </div>
-          </div>
+          </transition>
+        </div>
+        <div class="flex flex-col gap-y-3 lg:gap-0">
+          <label for="productDescription">Descrição</label>
+          <Textarea
+            id="productDescription"
+            placeholder="Camisa feita de 100% de algodão com gola V e detalhes nas costas."
+            class="placeholder:text-[#959595] px-4 shadow-sm"
+            rows="4"
+          />
+        </div>
+        <div class="w-full flex justify-between">
+          <Button plain text class="gap-x-3">
+            <ArrowRightIcon class="rotate-180" />
+            Voltar
+          </Button>
+          <Button plain text class="gap-x-3">
+            Imagens
+            <ArrowRightIcon class="" />
+          </Button>
         </div>
       </div>
     </div>
@@ -86,15 +107,17 @@
 
 <script setup>
 import { ref } from 'vue'
-
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
 import Slider from 'primevue/slider'
 import InputQuantity from '@/components/InputQuantity.vue'
 import InputCurrency from '@/components/InputCurrency.vue'
+import Textarea from 'primevue/textarea'
+import Button from 'primevue/button'
+import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue'
 
-const discountValue = ref(0)
+const discountValue = ref(25)
 const checked = ref(false)
 const selectedCategory = ref()
 
@@ -118,6 +141,16 @@ const items = ref([
 </script>
 
 <style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .product-category-dropdown > .p-dropdown-label.p-inputtext.p-placeholder,
 .product-category-dropdown > .p-dropdown-label.p-inputtext,
 .product-sub-category-dropdown > .p-dropdown-label.p-inputtext.p-placeholder,
