@@ -91,10 +91,12 @@
           />
         </div>
         <div class="w-full flex justify-between">
-          <Button plain text class="gap-x-3">
-            <ArrowRightIcon class="rotate-180" />
-            Voltar
-          </Button>
+          <RouterLink activeClass="font-semibold" to="/products">
+            <Button plain text class="gap-x-3">
+              <ArrowRightIcon class="rotate-180" />
+              Voltar
+            </Button>
+          </RouterLink>
           <Button plain text class="gap-x-3">
             Imagens
             <ArrowRightIcon class="" />
