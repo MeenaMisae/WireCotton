@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5 lg:flex">
     <div class="px-7 lg:px-0">
-      <div class="grid grid-cols-5 lg:grid-cols-1 gap-x-4 lg:gap-y-5 lg:flex lg:items-center lg:flex-col">
+      <div class="grid grid-cols-5 lg:grid-cols-1 gap-x-4 lg:gap-5 lg:flex lg:items-center lg:flex-col lg:ml-1">
         <StepItem
           v-for="(item, index) in items"
           :key="item.label"
@@ -12,12 +12,15 @@
         />
       </div>
     </div>
-    <div class="mt-10 lg:mt-0" v-show="step === 1">
-      <span class="before:content-['*'] before:text-red-500 before:mr-2"
-        >Todos os itens são obrigatórios</span
-      >
-      <div class="mt-7 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2">
-        <div class="flex flex-col gap-y-3 lg:gap-0">
+    <div class="mt-10 lg:mt-0 lg:ml-16" v-show="step === 1">
+      <div class="flex justify-between">
+        <h2 class="text-2xl hidden lg:block">1. Informações do produto</h2>
+        <span class="before:content-['*'] before:text-red-500 before:mr-2"
+          >Todos os itens são obrigatórios</span
+        >
+      </div>
+      <div class="mt-7 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-7 lg:gap-y-4">
+        <div class="flex flex-col gap-y-3">
           <label for="">Nome do produto</label>
           <input
             type="text"
@@ -25,7 +28,7 @@
             placeholder="Camisa gola V"
           />
         </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0">
+        <div class="flex flex-col gap-y-3">
           <label for="">Categoria</label>
           <div class="card flex justify-content-center">
             <Dropdown
@@ -39,7 +42,7 @@
             />
           </div>
         </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0 lg:col-start-2">
+        <div class="flex flex-col gap-y-3 lg:col-start-2">
           <label for="">Subcategoria</label>
           <div class="card flex justify-content-center">
             <Dropdown
@@ -54,23 +57,23 @@
           </div>
         </div>
         <div class="flex gap-x-5 lg:row-start-2">
-          <div class="flex flex-col gap-y-3 w-[50%] lg:gap-0">
+          <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="amount">Preço</label>
             <InputCurrency />
           </div>
-          <div class="flex flex-col gap-y-3 w-[50%] lg:gap-0">
+          <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="quantity">Quantidade</label>
             <InputQuantity />
           </div>
         </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0">
+        <div class="flex flex-col gap-y-3 lg:col-start-2">
           <span>Promoção</span>
           <div class="flex items-center gap-x-3">
             <Checkbox v-model="checked" :binary="true" inputId="discountCheckbox" />
             <label for="discountCheckbox" class="text-[#505050]">Produto promocional?</label>
           </div>
           <transition name="fade">
-            <div v-show="checked" class="space-y-3">
+            <div v-show="checked" class="space-y-3 lg:space-y-1">
               <Slider v-model="discountValue" class="w-full my-2" />
               <div class="flex flex-col">
                 <span class="text-[#505050] mt-2">Desconto: {{ discountValue }}%</span>
@@ -82,7 +85,7 @@
             </div>
           </transition>
         </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0">
+        <div class="flex flex-col gap-y-3 lg:col-start-1 lg:row-start-3">
           <label for="productDescription">Descrição</label>
           <Textarea
             id="productDescription"
@@ -91,7 +94,8 @@
             rows="4"
           />
         </div>
-        <div class="w-full flex justify-between">
+      </div>
+      <div class="w-full flex justify-between mt-4">
           <RouterLink activeClass="font-semibold" to="/products">
             <Button plain text class="gap-x-3">
               <ArrowRightIcon class="rotate-180" />
@@ -103,9 +107,8 @@
             <ArrowRightIcon class="" />
           </Button>
         </div>
-      </div>
     </div>
-    <div class="mt-10 lg:mt-0" v-show="step === 2">
+    <div class="mt-10 lg:mt-0 lg:ml-14" v-show="step === 2">
       <span class="before:content-['*'] before:text-red-500 before:mr-2"
         >Todos os itens são obrigatórios</span
       >
@@ -196,7 +199,7 @@
         </div>
       </div>
     </div>
-    <div class="mt-10 lg:mt-0" v-show="step === 3">
+    <div class="mt-10 lg:mt-0 lg:ml-14" v-show="step === 3">
       <span class="before:content-['*'] before:text-red-500 before:mr-2"
         >Todos os itens são obrigatórios</span
       >
@@ -280,7 +283,7 @@
               <ArrowRightIcon class="rotate-180" />
               Imagens
             </Button>
-          <Button plain text class="gap-x-3" @click="step++">
+          <Button plain text class="gap-x-3" @click="">
             Criar Produto
             <ArrowRightIcon class="" />
           </Button>
