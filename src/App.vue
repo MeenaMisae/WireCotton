@@ -19,12 +19,6 @@
 <script setup lang="ts">
 import SideMenu from './components/SideMenu.vue'
 import NavBar from './components/NavBar.vue'
-import { ref } from 'vue'
-
-const hide = ref()
-function hideOverflow(event: boolean) {
-  hide.value = event
-}
 </script>
 
 <style scoped>
