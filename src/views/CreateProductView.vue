@@ -106,86 +106,14 @@
             Imagens
             <ArrowRightIcon class="" />
           </Button>
-        </div>
+      </div>
     </div>
-    <div class="mt-10 lg:mt-0 lg:ml-14" v-show="step === 2">
-      <span class="before:content-['*'] before:text-red-500 before:mr-2"
-        >Todos os itens são obrigatórios</span
-      >
-      <div class="mt-7 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2">
-        <div class="flex flex-col gap-y-3 lg:gap-0">
-          <label for="">Nome do produto</label>
-          <input
-            type="text"
-            class="border rounded h-12 px-5 placeholder:text-[#959595] product-name shadow-sm"
-            placeholder="Camisa gola V"
-          />
-        </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0">
-          <label for="">Categoria</label>
-          <div class="card flex justify-content-center">
-            <Dropdown
-              v-model="selectedCategory"
-              :options="categories"
-              optionLabel="name"
-              placeholder="Feminino"
-              checkmark
-              :highlightOnSelect="false"
-              class="w-full md:w-14rem h-12 items-center product-category-dropdown"
-            />
-          </div>
-        </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0 lg:col-start-2">
-          <label for="">Subcategoria</label>
-          <div class="card flex justify-content-center">
-            <Dropdown
-              v-model="selectedSubcategory"
-              :options="subcategories"
-              optionLabel="name"
-              placeholder="Camisa"
-              checkmark
-              :highlightOnSelect="false"
-              class="w-full md:w-14rem h-12 items-center product-sub-category-dropdown"
-            />
-          </div>
-        </div>
-        <div class="flex gap-x-5 lg:row-start-2">
-          <div class="flex flex-col gap-y-3 w-[50%] lg:gap-0">
-            <label for="amount">Preço</label>
-            <InputCurrency />
-          </div>
-          <div class="flex flex-col gap-y-3 w-[50%] lg:gap-0">
-            <label for="quantity">Quantidade</label>
-            <InputQuantity />
-          </div>
-        </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0">
-          <span>Promoção</span>
-          <div class="flex items-center gap-x-3">
-            <Checkbox v-model="checked" :binary="true" inputId="discountCheckbox" />
-            <label for="discountCheckbox" class="text-[#505050]">Produto promocional?</label>
-          </div>
-          <transition name="fade">
-            <div v-show="checked" class="space-y-3">
-              <Slider v-model="discountValue" class="w-full my-2" />
-              <div class="flex flex-col">
-                <span class="text-[#505050] mt-2">Desconto: {{ discountValue }}%</span>
-                <div class="flex gap-x-4 items-center">
-                  <span class="text-[#505050]">Preço final com desconto: </span>
-                  <span class="font-semibold text-lg tracking-wider">R$23,50</span>
-                </div>
-              </div>
-            </div>
-          </transition>
-        </div>
-        <div class="flex flex-col gap-y-3 lg:gap-0">
-          <label for="productDescription">Descrição</label>
-          <Textarea
-            id="productDescription"
-            placeholder="Camisa feita de 100% de algodão com gola V e detalhes nas costas."
-            class="placeholder:text-[#959595] px-4 shadow-sm"
-            rows="4"
-          />
+    <div class="mt-10 lg:mt-0 lg:ml-16" v-show="step === 2">
+        <div class="flex justify-between">
+          <h2 class="text-2xl hidden lg:block">2. Imagens do produto</h2>
+          <span class="before:content-['*'] before:text-red-500 before:mr-2"
+            >Obrigatório no mínimo 1 imagem</span
+          >
         </div>
         <div class="w-full flex justify-between">
             <Button plain text class="gap-x-3" @click="step--">
@@ -196,7 +124,6 @@
             Revisão
             <ArrowRightIcon class="" />
           </Button>
-        </div>
       </div>
     </div>
     <div class="mt-10 lg:mt-0 lg:ml-14" v-show="step === 3">
@@ -310,7 +237,6 @@ const checked = ref(false)
 const selectedCategory = ref()
 const step = ref(1)
 
-const emit = defineEmits(['nextStep'])
 
 const categories = ref([
   { name: 'Masculino', code: 'M' },
