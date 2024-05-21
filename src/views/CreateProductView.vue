@@ -1,7 +1,9 @@
 <template>
   <div class="mt-5 lg:flex">
     <div class="px-7 lg:px-0">
-      <div class="grid grid-cols-5 lg:grid-cols-1 gap-x-4 lg:gap-5 lg:flex lg:items-center lg:flex-col lg:ml-1">
+      <div
+        class="grid grid-cols-5 lg:grid-cols-1 gap-x-4 lg:gap-5 lg:flex lg:items-center lg:flex-col lg:ml-1"
+      >
         <StepItem
           v-for="(item, index) in items"
           :key="item.label"
@@ -96,34 +98,42 @@
         </div>
       </div>
       <div class="w-full flex justify-between mt-4">
-          <RouterLink activeClass="font-semibold" to="/products">
-            <Button plain text class="gap-x-3">
-              <ArrowRightIcon class="rotate-180" />
-              Voltar
-            </Button>
-          </RouterLink>
-          <Button plain text class="gap-x-3" @click="step++">
-            Imagens
-            <ArrowRightIcon class="" />
+        <RouterLink activeClass="font-semibold" to="/products">
+          <Button plain text class="gap-x-3">
+            <ArrowRightIcon class="rotate-180" />
+            Voltar
           </Button>
+        </RouterLink>
+        <Button plain text class="gap-x-3" @click="step++">
+          Imagens
+          <ArrowRightIcon class="" />
+        </Button>
       </div>
     </div>
     <div class="mt-10 lg:mt-0 lg:ml-16" v-show="step === 2">
-        <div class="flex justify-between">
-          <h2 class="text-2xl hidden lg:block">2. Imagens do produto</h2>
-          <span class="before:content-['*'] before:text-red-500 before:mr-2"
-            >Obrigatório no mínimo 1 imagem</span
-          >
-        </div>
-        <div class="w-full flex justify-between">
-            <Button plain text class="gap-x-3" @click="step--">
-              <ArrowRightIcon class="rotate-180" />
-              Informações
-            </Button>
-          <Button plain text class="gap-x-3" @click="step++">
-            Revisão
-            <ArrowRightIcon class="" />
-          </Button>
+      <div class="flex justify-between">
+        <h2 class="text-2xl hidden lg:block">2. Imagens do produto</h2>
+        <span class="before:content-['*'] before:text-red-500 before:mr-2"
+          >Obrigatório no mínimo 1 imagem</span
+        >
+      </div>
+      <div class="flex w-40 justify-between items-center">
+        <h3>Total de imagens:</h3>
+        <span class="text-xl font-semibold">0</span>
+      </div>
+      <div class="border shadow-md flex justify-center items-center flex-col space-y-2 h-64">
+        <CloudUploadIcon />
+        <span class="text-[#626262]">Adicionar imagem</span>
+      </div>
+      <div class="w-full flex justify-between">
+        <Button plain text class="gap-x-3" @click="step--">
+          <ArrowRightIcon class="rotate-180" />
+          Informações
+        </Button>
+        <Button plain text class="gap-x-3" @click="step++">
+          Revisão
+          <ArrowRightIcon class="" />
+        </Button>
       </div>
     </div>
     <div class="mt-10 lg:mt-0 lg:ml-14" v-show="step === 3">
@@ -206,11 +216,11 @@
           />
         </div>
         <div class="w-full flex justify-between">
-            <Button plain text class="gap-x-3" @click="step--">
-              <ArrowRightIcon class="rotate-180" />
-              Imagens
-            </Button>
-          <Button plain text class="gap-x-3" @click="">
+          <Button plain text class="gap-x-3" @click="step--">
+            <ArrowRightIcon class="rotate-180" />
+            Imagens
+          </Button>
+          <Button plain text class="gap-x-3">
             Criar Produto
             <ArrowRightIcon class="" />
           </Button>
@@ -231,12 +241,12 @@ import InputCurrency from '@/components/InputCurrency.vue'
 import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue'
+import CloudUploadIcon from '@/components/icons/CloudUploadIcon.vue'
 
 const discountValue = ref(25)
 const checked = ref(false)
 const selectedCategory = ref()
 const step = ref(1)
-
 
 const categories = ref([
   { name: 'Masculino', code: 'M' },
