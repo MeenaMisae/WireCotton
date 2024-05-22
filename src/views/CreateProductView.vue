@@ -121,23 +121,29 @@
         <h3>Total de imagens:</h3>
         <span class="text-xl font-semibold">{{ productImages.length }}</span>
       </div>
-      <a
+      <div
         v-for="(file, index) in productImages"
         :key="index"
-        :href="file.preview"
-        target="_blank"
-        rel="noreferrer"
-        class="h-72 shadow border relative rounded-md block"
+        class="h-72 shadow border relative rounded-md"
+        id="gallery-items"
       >
         <div class="h-full w-full">
           <div
             class="h-20 w-full bg-gradient-to-t from-black/35 to-transparent absolute bottom-0"
           ></div>
-          <img
-            :src="file.preview"
-            alt="preview-produto"
-            class="object-cover h-full w-full object-top rounded-md"
-          />
+          <a
+            :href="file.preview"
+            target="_blank"
+            data-pswp-width="500"
+            data-pswp-height="657"
+            rel="noreferrer"
+          >
+            <img
+              :src="file.preview"
+              alt="preview-produto"
+              class="object-cover h-full w-full object-top rounded-md"
+            />
+          </a>
           <span class="absolute bottom-0 text-white p-3">{{ file.name }}</span>
           <SpeedDial
             @click="selectImage(index)"
@@ -146,7 +152,7 @@
             class="absolute bottom-0 right-0 p-3 speed-dial"
           />
         </div>
-      </a>
+      </div>
       <label
         for="uploadImages"
         class="border shadow-md flex justify-center items-center flex-col space-y-2 h-64 cursor-pointer"
@@ -351,6 +357,13 @@ const imageOptions = ref([
   }
 ])
 function previewImages(e) {
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#gallery',
+    children: '#gallery-items',
+    pswpModule: () => import('photoswipe'),
+    showHideAnimationType: 'fade'
+  })
+  lightbox.init()
   files = e.target.files
   if (updateFile) {
     const file = files[0]
@@ -366,12 +379,6 @@ function previewImages(e) {
   Object.values(files).forEach((element) => {
     productImages.value.push({ name: element.name, preview: URL.createObjectURL(element) })
   })
-  const lightbox = new PhotoSwipeLightbox({
-    gallery: '#gallery',
-    children: 'a',
-    pswpModule: () => import('photoswipe')
-  })
-  lightbox.init()
 }
 </script>
 
