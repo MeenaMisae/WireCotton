@@ -110,7 +110,7 @@
         </Button>
       </div>
     </div>
-    <div class="mt-7 lg:mt-0 lg:ml-16 space-y-4" v-show="step === 2">
+    <div class="mt-7 lg:mt-0 lg:ml-16 space-y-4" id="gallery" v-show="step === 2">
       <div class="flex justify-between">
         <h2 class="text-2xl hidden lg:block">2. Imagens do produto</h2>
         <span class="before:content-['*'] before:text-red-500 before:mr-2"
@@ -121,10 +121,13 @@
         <h3>Total de imagens:</h3>
         <span class="text-xl font-semibold">{{ productImages.length }}</span>
       </div>
-      <div
+      <a
         v-for="(file, index) in productImages"
         :key="index"
-        class="h-72 shadow border relative rounded-md"
+        :href="file.preview"
+        target="_blank"
+        rel="noreferrer"
+        class="h-72 shadow border relative rounded-md block"
       >
         <div class="h-full w-full">
           <div
@@ -143,7 +146,7 @@
             class="absolute bottom-0 right-0 p-3 speed-dial"
           />
         </div>
-      </div>
+      </a>
       <label
         for="uploadImages"
         class="border shadow-md flex justify-center items-center flex-col space-y-2 h-64 cursor-pointer"
@@ -278,6 +281,8 @@ import Button from 'primevue/button'
 import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue'
 import CloudUploadIcon from '@/components/icons/CloudUploadIcon.vue'
 import SpeedDial from 'primevue/speeddial'
+import PhotoSwipeLightbox from 'photoswipe/lightbox'
+import 'photoswipe/style.css'
 
 const discountValue = ref(25)
 const checked = ref(false)
@@ -361,6 +366,12 @@ function previewImages(e) {
   Object.values(files).forEach((element) => {
     productImages.value.push({ name: element.name, preview: URL.createObjectURL(element) })
   })
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#gallery',
+    children: 'a',
+    pswpModule: () => import('photoswipe')
+  })
+  lightbox.init()
 }
 </script>
 
