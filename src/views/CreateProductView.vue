@@ -127,44 +127,21 @@
         class="h-72 shadow border relative rounded-md"
       >
         <div class="h-full w-full">
-          <div class="h-full w-full bg-gradient-to-t from-black/10 to-transparent absolute"></div>
+          <div
+            class="h-20 w-full bg-gradient-to-t from-black/35 to-transparent absolute bottom-0"
+          ></div>
           <img
             :src="file.image.preview"
             alt="preview-produto"
             class="object-cover h-full w-full object-top rounded-md"
           />
           <span class="absolute bottom-0 text-white p-3">{{ file.image.name }}</span>
-          <span class="absolute bottom-0 right-0 p-3"
-            ><svg
-              width="29"
-              height="19"
-              viewBox="0 0 29 19"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M20.4451 10.4141C20.8346 10.4141 21.1504 10.0983 21.1504 9.70876C21.1504 9.31921 20.8346 9.00342 20.4451 9.00342C20.0555 9.00342 19.7397 9.31921 19.7397 9.70876C19.7397 10.0983 20.0555 10.4141 20.4451 10.4141Z"
-                stroke="#FCFEFE"
-                stroke-width="1.69283"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M20.4451 5.47661C20.8346 5.47661 21.1504 5.16082 21.1504 4.77126C21.1504 4.38171 20.8346 4.06592 20.4451 4.06592C20.0555 4.06592 19.7397 4.38171 19.7397 4.77126C19.7397 5.16082 20.0555 5.47661 20.4451 5.47661Z"
-                stroke="#FCFEFE"
-                stroke-width="1.69283"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M20.4451 15.3516C20.8346 15.3516 21.1504 15.0358 21.1504 14.6463C21.1504 14.2567 20.8346 13.9409 20.4451 13.9409C20.0555 13.9409 19.7397 14.2567 19.7397 14.6463C19.7397 15.0358 20.0555 15.3516 20.4451 15.3516Z"
-                stroke="#FCFEFE"
-                stroke-width="1.69283"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
+          <SpeedDial
+            @click="selectImage(index)"
+            :model="imageOptions"
+            direction="up"
+            class="absolute bottom-0 right-0 p-3 speed-dial"
+          />
         </div>
       </div>
       <label
@@ -175,6 +152,7 @@
         <span class="text-[#626262]">Adicionar imagem</span>
       </label>
       <input
+        ref="uploadImages"
         id="uploadImages"
         type="file"
         @change="previewImages"
@@ -299,12 +277,14 @@ import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue'
 import CloudUploadIcon from '@/components/icons/CloudUploadIcon.vue'
+import SpeedDial from 'primevue/speeddial'
 
 const discountValue = ref(25)
 const checked = ref(false)
 const selectedCategory = ref()
 const step = ref(2)
 const selectedSubcategory = ref(1)
+const uploadImages = ref()
 
 const categories = ref([
   { name: 'Masculino', code: 'M' },
@@ -324,10 +304,35 @@ const items = ref([
   }
 ])
 
+let selectedImage = null
+let updateFile = null
+let deleteFile = null
+function selectImage(e) {
+  selectedImage = e
+}
 const productImages = ref([])
+let files = null
+
+const imageOptions = ref([
+  {
+    label: 'Alterar',
+    icon: 'pi pi-pencil',
+    command: () => {
+      selectedImage = updateFile
+      previewImages(e)
+    }
+  },
+  {
+    label: 'Excluir',
+    icon: 'pi pi-trash'
+  }
+])
 function previewImages(e) {
-  let files = e.target.files
+  files = e.target.files
   Object.values(files).forEach((element) => {
+    if (selectedImage && updateFile) {
+      console.log(updateFile)
+    }
     productImages.value.push({
       image: { name: element.name, preview: URL.createObjectURL(element) }
     })
@@ -346,6 +351,11 @@ function previewImages(e) {
   opacity: 0;
 }
 
+.speed-dial > .p-speeddial-button {
+  background-color: transparent;
+  border: 0;
+  height: 1.5rem;
+}
 .product-category-dropdown > .p-dropdown-label.p-inputtext.p-placeholder,
 .product-category-dropdown > .p-dropdown-label.p-inputtext,
 .product-sub-category-dropdown > .p-dropdown-label.p-inputtext.p-placeholder,
