@@ -131,11 +131,11 @@
             class="h-20 w-full bg-gradient-to-t from-black/35 to-transparent absolute bottom-0"
           ></div>
           <img
-            :src="file.image.preview"
+            :src="file.preview"
             alt="preview-produto"
             class="object-cover h-full w-full object-top rounded-md"
           />
-          <span class="absolute bottom-0 text-white p-3">{{ file.image.name }}</span>
+          <span class="absolute bottom-0 text-white p-3">{{ file.name }}</span>
           <SpeedDial
             @click="selectImage(index)"
             :model="imageOptions"
@@ -285,6 +285,12 @@ const selectedCategory = ref()
 const step = ref(2)
 const selectedSubcategory = ref(1)
 const uploadImages = ref()
+const productImages = ref([])
+
+let selectedImageIndex = null
+let selectedImage = null
+let files = null
+let updateFile = null
 
 const categories = ref([
   { name: 'Masculino', code: 'M' },
@@ -304,38 +310,56 @@ const items = ref([
   }
 ])
 
-let selectedImage = null
-let updateFile = null
-let deleteFile = null
-function selectImage(e) {
-  selectedImage = e
+function selectImage(index) {
+  selectedImageIndex = index
+  selectedImage = productImages.value[index]
 }
-const productImages = ref([])
-let files = null
 
 const imageOptions = ref([
+  {
+    label: 'Visualizar',
+    icon: 'pi pi-eye',
+    command: () => {}
+  },
   {
     label: 'Alterar',
     icon: 'pi pi-pencil',
     command: () => {
-      selectedImage = updateFile
-      previewImages(e)
+      if (selectedImage) {
+        updateFile = selectedImage
+        uploadImages.value.click()
+      }
     }
   },
   {
     label: 'Excluir',
-    icon: 'pi pi-trash'
+    icon: 'pi pi-trash',
+    command: () => {
+      if (selectedImage) {
+        const index = productImages.value.indexOf(selectedImage)
+        if (index !== -1) {
+          productImages.value.splice(index, 1)
+          selectedImage = null
+        }
+      }
+    }
   }
 ])
 function previewImages(e) {
   files = e.target.files
-  Object.values(files).forEach((element) => {
-    if (selectedImage && updateFile) {
-      console.log(updateFile)
+  if (updateFile) {
+    const file = files[0]
+    if (file) {
+      productImages.value[selectedImageIndex] = {
+        name: file.name,
+        preview: URL.createObjectURL(file)
+      }
+      updateFile = null
+      return
     }
-    productImages.value.push({
-      image: { name: element.name, preview: URL.createObjectURL(element) }
-    })
+  }
+  Object.values(files).forEach((element) => {
+    productImages.value.push({ name: element.name, preview: URL.createObjectURL(element) })
   })
 }
 </script>
