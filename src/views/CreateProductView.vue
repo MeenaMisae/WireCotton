@@ -275,7 +275,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
@@ -297,11 +297,19 @@ const step = ref(2)
 const selectedSubcategory = ref(1)
 const uploadImages = ref()
 const productImages = ref([])
+const selected = ref(false)
 
 let selectedImageIndex = null
 let selectedImage = null
 let files = null
 let updateFile = null
+
+// const lightbox = new PhotoSwipeLightbox({
+//   gallery: '#gallery',
+//   children: '#gallery-items',
+//   pswpModule: () => import('photoswipe'),
+//   showHideAnimationType: 'fade'
+// })
 
 const categories = ref([
   { name: 'Masculino', code: 'M' },
@@ -324,7 +332,16 @@ const items = ref([
 function selectImage(index) {
   selectedImageIndex = index
   selectedImage = productImages.value[index]
+  selected.value = true
 }
+
+// watch(selected, () => {
+//   if (selected.value) {
+//     lightbox.destroy()
+//   } else {
+//     lightbox.init()
+//   }
+// })
 
 const imageOptions = ref([
   {
@@ -357,13 +374,7 @@ const imageOptions = ref([
   }
 ])
 function previewImages(e) {
-  const lightbox = new PhotoSwipeLightbox({
-    gallery: '#gallery',
-    children: '#gallery-items',
-    pswpModule: () => import('photoswipe'),
-    showHideAnimationType: 'fade'
-  })
-  lightbox.init()
+  // lightbox.init()
   files = e.target.files
   if (updateFile) {
     const file = files[0]
