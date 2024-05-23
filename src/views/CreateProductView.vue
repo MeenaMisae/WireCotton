@@ -133,6 +133,7 @@
           ></div>
           <a
             :href="file.preview"
+            @click="showPhotoSwipe"
             target="_blank"
             data-pswp-width="500"
             data-pswp-height="657"
@@ -147,6 +148,7 @@
           <span class="absolute bottom-0 text-white p-3">{{ file.name }}</span>
           <SpeedDial
             @click="selectImage(index)"
+            @show="destroyPhotoSwipe"
             :model="imageOptions"
             direction="up"
             class="absolute bottom-0 right-0 p-3 speed-dial"
@@ -275,7 +277,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
@@ -297,19 +299,23 @@ const step = ref(2)
 const selectedSubcategory = ref(1)
 const uploadImages = ref()
 const productImages = ref([])
-const selected = ref(false)
+const galleryItem = ref()
 
 let selectedImageIndex = null
 let selectedImage = null
 let files = null
 let updateFile = null
 
-// const lightbox = new PhotoSwipeLightbox({
-//   gallery: '#gallery',
-//   children: '#gallery-items',
-//   pswpModule: () => import('photoswipe'),
-//   showHideAnimationType: 'fade'
-// })
+const lightbox = new PhotoSwipeLightbox({
+  gallery: '#gallery',
+  children: '#gallery-items',
+  pswpModule: () => import('photoswipe'),
+  showHideAnimationType: 'fade'
+})
+
+onMounted(() => {
+  lightbox.init()
+})
 
 const categories = ref([
   { name: 'Masculino', code: 'M' },
@@ -332,23 +338,17 @@ const items = ref([
 function selectImage(index) {
   selectedImageIndex = index
   selectedImage = productImages.value[index]
-  selected.value = true
 }
 
-// watch(selected, () => {
-//   if (selected.value) {
-//     lightbox.destroy()
-//   } else {
-//     lightbox.init()
-//   }
-// })
+function destroyPhotoSwipe() {
+  lightbox.destroy()
+}
+
+function showPhotoSwipe() {
+  lightbox.init()
+}
 
 const imageOptions = ref([
-  {
-    label: 'Visualizar',
-    icon: 'pi pi-eye',
-    command: () => {}
-  },
   {
     label: 'Alterar',
     icon: 'pi pi-pencil',
@@ -374,7 +374,6 @@ const imageOptions = ref([
   }
 ])
 function previewImages(e) {
-  // lightbox.init()
   files = e.target.files
   if (updateFile) {
     const file = files[0]
