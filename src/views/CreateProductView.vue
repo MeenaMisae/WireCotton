@@ -110,8 +110,12 @@
         </Button>
       </div>
     </div>
-    <div class="mt-7 lg:mt-0 lg:ml-16 space-y-4" id="gallery" v-show="step === 2">
-      <div class="flex justify-between">
+    <div
+      class="mt-7 lg:mt-0 lg:ml-16 space-y-4 lg:w-[54vw] lg:overflow-x-auto"
+      id="gallery"
+      v-show="step === 2"
+    >
+      <div class="flex justify-between w-full">
         <h2 class="text-2xl hidden lg:block">2. Imagens do produto</h2>
         <span class="before:content-['*'] before:text-red-500 before:mr-2"
           >Obrigatório no mínimo 1 imagem.</span
@@ -121,56 +125,58 @@
         <h3>Total de imagens:</h3>
         <span class="text-xl font-semibold">{{ productImages.length }}</span>
       </div>
-      <div
-        v-for="(file, index) in productImages"
-        :key="index"
-        class="h-72 shadow border relative rounded-md"
-        id="gallery-items"
-      >
-        <div class="h-full w-full">
-          <div
-            class="h-20 w-full bg-gradient-to-t from-black/35 to-transparent absolute bottom-0"
-          ></div>
-          <a
-            :href="file.preview"
-            @click="showPhotoSwipe"
-            target="_blank"
-            data-pswp-width="500"
-            data-pswp-height="657"
-            rel="noreferrer"
-          >
-            <img
-              :src="file.preview"
-              alt="preview-produto"
-              class="object-cover h-full w-full object-top rounded-md"
+      <div class="lg:flex lg:gap-x-4 lg:max-w-full lg:overflow-x-auto space-y-4 lg:space-y-0">
+        <div
+          v-for="(file, index) in productImages"
+          :key="index"
+          class="h-72 shadow border relative rounded-md lg:w-60"
+          id="gallery-items"
+        >
+          <div class="h-full w-full lg:w-60">
+            <div
+              class="h-20 w-full bg-gradient-to-t from-black/35 to-transparent absolute bottom-0"
+            ></div>
+            <a
+              :href="file.preview"
+              @click="showPhotoSwipe"
+              target="_blank"
+              data-pswp-width="500"
+              data-pswp-height="657"
+              rel="noreferrer"
+            >
+              <img
+                :src="file.preview"
+                alt="preview-produto"
+                class="object-cover h-full w-full object-top rounded-md"
+              />
+            </a>
+            <span class="absolute bottom-0 text-white p-3">{{ file.name }}</span>
+            <SpeedDial
+              @click="selectImage(index)"
+              @show="destroyPhotoSwipe"
+              :model="imageOptions"
+              direction="up"
+              class="absolute bottom-0 right-0 p-3 speed-dial"
             />
-          </a>
-          <span class="absolute bottom-0 text-white p-3">{{ file.name }}</span>
-          <SpeedDial
-            @click="selectImage(index)"
-            @show="destroyPhotoSwipe"
-            :model="imageOptions"
-            direction="up"
-            class="absolute bottom-0 right-0 p-3 speed-dial"
-          />
+          </div>
         </div>
+        <label
+          for="uploadImages"
+          class="border shadow-lg flex justify-center items-center flex-col space-y-2 h-64 cursor-pointer lg:w-60 rounded-lg"
+        >
+          <CloudUploadIcon />
+          <span class="text-[#626262]">Adicionar imagem</span>
+        </label>
+        <input
+          ref="uploadImages"
+          id="uploadImages"
+          type="file"
+          @change="previewImages"
+          hidden
+          multiple
+          accept="image/*"
+        />
       </div>
-      <label
-        for="uploadImages"
-        class="border shadow-md flex justify-center items-center flex-col space-y-2 h-64 cursor-pointer"
-      >
-        <CloudUploadIcon />
-        <span class="text-[#626262]">Adicionar imagem</span>
-      </label>
-      <input
-        ref="uploadImages"
-        id="uploadImages"
-        type="file"
-        @change="previewImages"
-        hidden
-        multiple
-        accept="image/*"
-      />
       <div class="w-full flex justify-between">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
@@ -277,7 +283,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch, watchEffect } from 'vue'
+import { onMounted, ref } from 'vue'
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
