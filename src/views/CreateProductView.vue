@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 lg:flex">
+  <div class="mt-5 lg:flex overflow-hidden">
     <div class="px-7 lg:px-0">
       <div
         class="grid grid-cols-5 lg:grid-cols-1 gap-x-4 lg:gap-5 lg:flex lg:items-center lg:flex-col lg:ml-1"
@@ -111,7 +111,7 @@
       </div>
     </div>
     <div
-      class="mt-7 lg:mt-0 lg:ml-16 space-y-4 lg:w-[54vw] lg:overflow-x-auto"
+      class="mt-7 lg:mt-0 lg:ml-16 space-y-4 lg:w-[65vw] lg:overflow-x-auto"
       id="gallery"
       v-show="step === 2"
     >
@@ -129,7 +129,7 @@
         <div
           v-for="(file, index) in productImages"
           :key="index"
-          class="h-72 shadow border relative rounded-md lg:w-60"
+          class="h-72 shadow border relative rounded-md lg:w-60 lg:mb-2"
           id="gallery-items"
         >
           <div class="h-full w-full lg:w-60">
@@ -162,7 +162,7 @@
         </div>
         <label
           for="uploadImages"
-          class="border shadow-lg flex justify-center items-center flex-col space-y-2 h-64 cursor-pointer lg:w-60 rounded-lg"
+          class="border shadow-lg flex justify-center items-center flex-col space-y-2 h-72 min-w-60 cursor-pointer rounded-lg"
         >
           <CloudUploadIcon />
           <span class="text-[#626262]">Adicionar imagem</span>
@@ -305,7 +305,6 @@ const step = ref(2)
 const selectedSubcategory = ref(1)
 const uploadImages = ref()
 const productImages = ref([])
-const galleryItem = ref()
 
 let selectedImageIndex = null
 let selectedImage = null
@@ -440,5 +439,37 @@ function previewImages(e) {
   outline: 1px solid #000000;
   outline-offset: -1px;
   border-color: #94a3b8;
+}
+
+@media screen and (min-width: 1024px) {
+  *::-webkit-scrollbar {
+    height: 5px;
+    width: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #e1e1e1;
+  }
+
+  *::-webkit-scrollbar-track:hover {
+    background-color: #b8c0c2;
+  }
+
+  *::-webkit-scrollbar-track:active {
+    background-color: #b8c0c2;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #505050;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #505050;
+  }
+
+  *::-webkit-scrollbar-thumb:active {
+    background-color: #505050;
+  }
 }
 </style>
