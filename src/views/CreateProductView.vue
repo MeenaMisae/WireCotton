@@ -411,7 +411,8 @@ function previewImages(e) {
 .speed-dial > .p-speeddial-button {
   background-color: transparent;
   border: 0;
-  height: 1.5rem;
+  position: relative;
+  top: 7px;
 }
 .product-category-dropdown > .p-dropdown-label.p-inputtext.p-placeholder,
 .product-category-dropdown > .p-dropdown-label.p-inputtext,
