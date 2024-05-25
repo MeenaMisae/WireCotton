@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "photoswipe": "^5.4.3",
     "primeicons": "^6.0.1",
     "primevue": "^3.50.0",
     "v-money3": "^3.24.1",
