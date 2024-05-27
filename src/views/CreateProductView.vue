@@ -14,7 +14,7 @@
         />
       </div>
     </div>
-    <div class="mt-10 lg:mt-0 lg:ml-16" v-show="step === 1">
+    <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" v-show="step === 1">
       <div class="flex justify-between">
         <h2 class="text-2xl hidden lg:block">1. Informações do produto</h2>
         <span class="before:content-['*'] before:text-red-500 before:mr-2"
@@ -111,7 +111,7 @@
       </div>
     </div>
     <div
-      class="mt-7 lg:mt-0 lg:ml-16 space-y-4 lg:w-[65vw] lg:overflow-x-auto"
+      class="mt-7 lg:mt-0 space-y-4 lg:w-[60vw] lg:overflow-x-auto lg:ml-16"
       id="gallery"
       v-show="step === 2"
     >
@@ -188,7 +188,22 @@
         </Button>
       </div>
     </div>
-    <div class="mt-10 lg:mt-0 lg:ml-14" v-show="step === 3">
+    <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" id="review-gallery" v-show="step === 3">
+      <div v-for="image in productImages" :key="image.preview" id="review-gallery-item">
+        <a
+          :href="image.preview"
+          target="_blank"
+          data-pswp-width="500"
+          data-pswp-height="657"
+          rel="noreferrer"
+        >
+          <img
+            :src="image.preview"
+            alt="preview-produto"
+            class="object-cover h-full w-full object-top rounded-md"
+          />
+        </a>
+      </div>
       <div class="w-full flex justify-between">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
@@ -244,8 +259,16 @@ const lightbox = new PhotoSwipeLightbox({
   showHideAnimationType: 'fade'
 })
 
+const reviewImages = new PhotoSwipeLightbox({
+  gallery: '#review-gallery',
+  children: '#review-gallery-item',
+  pswpModule: () => import('photoswipe'),
+  showHideAnimationType: 'fade'
+})
+
 onMounted(() => {
   lightbox.init()
+  reviewImages.init()
 })
 
 const categories = ref([
