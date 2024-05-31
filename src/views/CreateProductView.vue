@@ -189,23 +189,43 @@
       </div>
     </div>
     <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" id="review-gallery" v-show="step === 3">
-      <div class="swiper">
-        <div class="swiper-wrapper">
-          <div v-for="image in productImages" :key="image.preview" class="swiper-slide">
+      <div class="swiper w-72">
+        <div class="swiper-wrapper w-96">
+          <div v-for="image in productImages" :key="image.preview" class="swiper-slide flex items-center">
             <a :href="image.preview" data-pswp-width="500" data-pswp-height="657">
               <img
                 :src="image.preview"
                 alt="preview-produto"
-                class="object-cover h-full w-full object-top rounded-md"
+                class="object-cover h-72 w-full rounded-md"
               />
             </a>
           </div>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next">
+          <Button
+          class="min-w-[2rem]"
+          icon="pi pi-chevron-right"
+          iconClass="text-lg"
+          iconPos="right"
+          plain
+          text
+        >
+        </Button>
+        </div>
+        <div class="swiper-button-prev">
+          <Button
+          class="min-w-[2rem]"
+          icon="pi pi-chevron-left"
+          iconClass="text-lg"
+          iconPos="right"
+          plain
+          text
+        >
+        </Button>
+        </div>
         <div class="swiper-pagination"></div>
       </div>
-      <div class="w-full flex justify-between">
+      <div class="w-full flex justify-between mt-4">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
           Imagens
@@ -225,7 +245,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
@@ -272,6 +292,9 @@ const reviewImages = new PhotoSwipeLightbox({
   showHideAnimationType: 'fade'
 })
 
+// watch(productImages, (n, o) => {
+//   console.log(n)
+// })
 onMounted(() => {
   lightbox.init()
   reviewImages.init()
@@ -342,6 +365,7 @@ const imageOptions = ref([
           selectedImage = null
         }
       }
+      console.log(productImages.value)
     }
   }
 ])
@@ -369,6 +393,35 @@ function previewImages(e) {
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
+
+.swiper-pagination-bullet-active {
+	background-color: #FFFFFF !important;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #A7A7A7 !important;
+}
+
+.swiper-pagination-bullet {
+	background-color: #A7A7A7 !important;
+  margin-left: 6px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #A7A7A7 !important;
+}
+
+.swiper-button-prev {
+    color: black;
+}
+
+.swiper-button-next {
+    color: black; 
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+    content: "";
+    display: none;
+}
+
 
 .fade-enter-from,
 .fade-leave-to {
