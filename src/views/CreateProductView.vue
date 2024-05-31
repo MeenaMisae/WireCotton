@@ -189,20 +189,21 @@
       </div>
     </div>
     <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" id="review-gallery" v-show="step === 3">
-      <div v-for="image in productImages" :key="image.preview" id="review-gallery-item">
-        <a
-          :href="image.preview"
-          target="_blank"
-          data-pswp-width="500"
-          data-pswp-height="657"
-          rel="noreferrer"
-        >
-          <img
-            :src="image.preview"
-            alt="preview-produto"
-            class="object-cover h-full w-full object-top rounded-md"
-          />
-        </a>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div v-for="image in productImages" :key="image.preview" class="swiper-slide">
+            <a :href="image.preview" data-pswp-width="500" data-pswp-height="657">
+              <img
+                :src="image.preview"
+                alt="preview-produto"
+                class="object-cover h-full w-full object-top rounded-md"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
       </div>
       <div class="w-full flex justify-between">
         <Button plain text class="gap-x-3" @click="step--">
@@ -238,6 +239,11 @@ import CloudUploadIcon from '@/components/icons/CloudUploadIcon.vue'
 import SpeedDial from 'primevue/speeddial'
 import PhotoSwipeLightbox from 'photoswipe/lightbox'
 import 'photoswipe/style.css'
+import Swiper from 'swiper'
+import 'swiper/css'
+import { Navigation, Pagination } from 'swiper/modules'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 const discountValue = ref(25)
 const checked = ref(false)
@@ -261,7 +267,7 @@ const lightbox = new PhotoSwipeLightbox({
 
 const reviewImages = new PhotoSwipeLightbox({
   gallery: '#review-gallery',
-  children: '#review-gallery-item',
+  children: 'a',
   pswpModule: () => import('photoswipe'),
   showHideAnimationType: 'fade'
 })
@@ -269,6 +275,18 @@ const reviewImages = new PhotoSwipeLightbox({
 onMounted(() => {
   lightbox.init()
   reviewImages.init()
+  const swiper = new Swiper('.swiper', {
+    modules: [Pagination, Navigation],
+    direction: 'horizontal',
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    },
+    pagination: {
+      el: '.swiper-pagination'
+    },
+    loop: true
+  })
 })
 
 const categories = ref([
