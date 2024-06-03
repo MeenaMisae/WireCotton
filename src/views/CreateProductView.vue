@@ -188,9 +188,9 @@
         </Button>
       </div>
     </div>
-    <div class="mt-10 lg:mt-0 lg:max-w-4xl lg:px-16" id="review-gallery" v-show="step === 3">
-      <h2 class="text-2xl hidden lg:block lg:mb-6 lg:ml-5">3. Revisão do produto</h2>
-      <div class="lg:flex lg:gap-5">
+    <div class="mt-10 lg:mt-0 lg:w-[80%] lg:px-16" id="review-gallery" v-show="step === 3">
+      <h2 class="text-2xl hidden lg:block lg:mb-6">3. Revisão do produto</h2>
+      <div class="lg:flex">
         <div class="swiper w-80">
           <div class="swiper-wrapper w-96">
             <div
@@ -230,7 +230,7 @@
           </div>
           <div class="swiper-pagination"></div>
         </div>
-        <div class="space-y-5 mt-8 lg:mt-0 lg:max-w-96 px-2 lg:px-0">
+        <div class="space-y-5 mt-8 lg:mt-0 lg:w-[65%] lg:px-6 px-2">
           <h3 class="text-lg font-semibold">Camisa gola V</h3>
           <p class="text-lg text-[#505050]">
             Camisa feita de 100% de algodão com gola V e detalhes nas costas.
@@ -257,7 +257,7 @@
           </div>
         </div>
       </div>
-      <div class="w-full flex justify-between mt-8 lg:w-[58rem]">
+      <div class="w-full flex justify-between mt-8">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
           Imagens
