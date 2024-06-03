@@ -188,50 +188,76 @@
         </Button>
       </div>
     </div>
-    <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" id="review-gallery" v-show="step === 3">
-      <div class="swiper w-80">
-        <div class="swiper-wrapper w-96">
+    <div class="mt-10 lg:mt-0 lg:max-w-4xl lg:px-16" id="review-gallery" v-show="step === 3">
+      <h2 class="text-2xl hidden lg:block lg:mb-6 lg:ml-5">3. Revisão do produto</h2>
+      <div class="lg:flex lg:gap-5">
+        <div class="swiper w-80">
+          <div class="swiper-wrapper w-96">
+            <div
+              v-for="image in productImages"
+              :key="image.preview"
+              class="swiper-slide flex items-center"
+            >
+              <a :href="image.preview" data-pswp-width="500" data-pswp-height="657">
+                <img
+                  :src="image.preview"
+                  alt="preview-produto"
+                  class="object-cover h-96 w-full rounded-lg shadow-md border object-top"
+                />
+              </a>
+            </div>
+          </div>
+          <div class="swiper-button-next">
+            <Button
+              class="min-w-[2.5rem] mb-8"
+              icon="pi pi-chevron-right"
+              iconClass="text-lg"
+              iconPos="right"
+              plain
+              text
+            >
+            </Button>
+          </div>
+          <div class="swiper-button-prev">
+            <Button
+              class="min-w-[2.5rem] mb-8"
+              icon="pi pi-chevron-left"
+              iconPos="right"
+              plain
+              text
+            >
+            </Button>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="space-y-5 mt-8 lg:mt-0 lg:max-w-96 px-2 lg:px-0">
+          <h3 class="text-lg font-semibold">Camisa gola V</h3>
+          <p class="text-lg text-[#505050]">
+            Camisa feita de 100% de algodão com gola V e detalhes nas costas.
+          </p>
+          <div class="space-x-3">
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">Feminino</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">Camisa</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">4 unidades</span>
+          </div>
+          <div class="flex gap-8">
+            <div class="flex items-center space-x-1.5">
+              <ProductPriceIcon />
+              <span class="text-lg font-semibold mt-0.5">50,00</span>
+            </div>
+            <div class="flex items-center space-x-1.5">
+              <ProductDiscountIcon />
+              <span class="text-lg font-semibold mt-0.5">75%</span>
+            </div>
+          </div>
           <div
-            v-for="image in productImages"
-            :key="image.preview"
-            class="swiper-slide flex items-center"
+            class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center"
           >
-            <a :href="image.preview" data-pswp-width="500" data-pswp-height="657">
-              <img
-                :src="image.preview"
-                alt="preview-produto"
-                class="object-cover h-96 w-full rounded-lg shadow-md border object-top"
-              />
-            </a>
+            <span class="font-semibold text-lg">Preço final: R$ 12,50</span>
           </div>
         </div>
-        <div class="swiper-button-next">
-          <Button
-            class="min-w-[2.5rem] mb-8"
-            icon="pi pi-chevron-right"
-            iconClass="text-lg"
-            iconPos="right"
-            plain
-            text
-          >
-          </Button>
-        </div>
-        <div class="swiper-button-prev">
-          <Button class="min-w-[2.5rem] mb-8" icon="pi pi-chevron-left" iconPos="right" plain text>
-          </Button>
-        </div>
-        <div class="swiper-pagination"></div>
       </div>
-      <div>
-        <h3 class="text-lg font-semibold">Camisa gola V</h3>
-        <p class="text-lg text-[#505050]">
-          Camisa feita de 100% de algodão com gola V e detalhes nas costas.
-        </p>
-        <div>
-          <span class="border shadow-md p-2">Feminino</span>
-        </div>
-      </div>
-      <div class="w-full flex justify-between mt-4">
+      <div class="w-full flex justify-between mt-8 lg:w-[58rem]">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
           Imagens
@@ -270,6 +296,8 @@ import 'swiper/css'
 import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import ProductPriceIcon from '@/components/icons/ProductPriceIcon.vue'
+import ProductDiscountIcon from '@/components/icons/ProductDiscountIcon.vue'
 
 const discountValue = ref(25)
 const checked = ref(false)
@@ -424,10 +452,6 @@ function previewImages(e) {
   border-color: #a7a7a7 !important;
 }
 
-.swiper-pagination {
-  position: static;
-  margin-top: 1rem;
-}
 .swiper-pagination-bullet {
   background-color: #a7a7a7 !important;
   margin-left: 6px;
@@ -438,10 +462,12 @@ function previewImages(e) {
 
 .swiper-button-prev {
   color: black;
+  margin-top: 6px;
 }
 
 .swiper-button-next {
   color: black;
+  margin-top: 6px;
 }
 
 .swiper-button-next::after,
