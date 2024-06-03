@@ -189,41 +189,47 @@
       </div>
     </div>
     <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" id="review-gallery" v-show="step === 3">
-      <div class="swiper w-72">
+      <div class="swiper w-80">
         <div class="swiper-wrapper w-96">
-          <div v-for="image in productImages" :key="image.preview" class="swiper-slide flex items-center">
+          <div
+            v-for="image in productImages"
+            :key="image.preview"
+            class="swiper-slide flex items-center"
+          >
             <a :href="image.preview" data-pswp-width="500" data-pswp-height="657">
               <img
                 :src="image.preview"
                 alt="preview-produto"
-                class="object-cover h-72 w-full rounded-md"
+                class="object-cover h-96 w-full rounded-lg shadow-md border object-top"
               />
             </a>
           </div>
         </div>
         <div class="swiper-button-next">
           <Button
-          class="min-w-[2rem]"
-          icon="pi pi-chevron-right"
-          iconClass="text-lg"
-          iconPos="right"
-          plain
-          text
-        >
-        </Button>
+            class="min-w-[2.5rem] mb-8"
+            icon="pi pi-chevron-right"
+            iconClass="text-lg"
+            iconPos="right"
+            plain
+            text
+          >
+          </Button>
         </div>
         <div class="swiper-button-prev">
-          <Button
-          class="min-w-[2rem]"
-          icon="pi pi-chevron-left"
-          iconClass="text-lg"
-          iconPos="right"
-          plain
-          text
-        >
-        </Button>
+          <Button class="min-w-[2.5rem] mb-8" icon="pi pi-chevron-left" iconPos="right" plain text>
+          </Button>
         </div>
         <div class="swiper-pagination"></div>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold">Camisa gola V</h3>
+        <p class="text-lg text-[#505050]">
+          Camisa feita de 100% de algodão com gola V e detalhes nas costas.
+        </p>
+        <div>
+          <span class="border shadow-md p-2">Feminino</span>
+        </div>
       </div>
       <div class="w-full flex justify-between mt-4">
         <Button plain text class="gap-x-3" @click="step--">
@@ -245,7 +251,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
@@ -292,9 +298,6 @@ const reviewImages = new PhotoSwipeLightbox({
   showHideAnimationType: 'fade'
 })
 
-// watch(productImages, (n, o) => {
-//   console.log(n)
-// })
 onMounted(() => {
   lightbox.init()
   reviewImages.init()
@@ -307,8 +310,7 @@ onMounted(() => {
     },
     pagination: {
       el: '.swiper-pagination'
-    },
-    loop: true
+    }
   })
 })
 
@@ -365,7 +367,17 @@ const imageOptions = ref([
           selectedImage = null
         }
       }
-      console.log(productImages.value)
+      const swiper = new Swiper('.swiper', {
+        modules: [Pagination, Navigation],
+        direction: 'horizontal',
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
+        pagination: {
+          el: '.swiper-pagination'
+        }
+      })
     }
   }
 ])
@@ -384,6 +396,17 @@ function previewImages(e) {
   }
   Object.values(files).forEach((element) => {
     productImages.value.push({ name: element.name, preview: URL.createObjectURL(element) })
+    const swiper = new Swiper('.swiper', {
+      modules: [Pagination, Navigation],
+      direction: 'horizontal',
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      pagination: {
+        el: '.swiper-pagination'
+      }
+    })
   })
 }
 </script>
@@ -395,33 +418,37 @@ function previewImages(e) {
 }
 
 .swiper-pagination-bullet-active {
-	background-color: #FFFFFF !important;
+  background-color: #ffffff !important;
   border-width: 1px;
   border-style: solid;
-  border-color: #A7A7A7 !important;
+  border-color: #a7a7a7 !important;
 }
 
+.swiper-pagination {
+  position: static;
+  margin-top: 1rem;
+}
 .swiper-pagination-bullet {
-	background-color: #A7A7A7 !important;
+  background-color: #a7a7a7 !important;
   margin-left: 6px;
   border-width: 1px;
   border-style: solid;
-  border-color: #A7A7A7 !important;
+  border-color: #a7a7a7 !important;
 }
 
 .swiper-button-prev {
-    color: black;
+  color: black;
 }
 
 .swiper-button-next {
-    color: black; 
+  color: black;
 }
 
-.swiper-button-next::after, .swiper-button-prev::after {
-    content: "";
-    display: none;
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  content: '';
+  display: none;
 }
-
 
 .fade-enter-from,
 .fade-leave-to {
