@@ -28,6 +28,7 @@
             type="text"
             class="border rounded h-12 px-5 placeholder:text-[#959595] product-name shadow-sm"
             placeholder="Camisa gola V"
+            v-model="productName"
           />
         </div>
         <div class="flex flex-col gap-y-3">
@@ -61,11 +62,11 @@
         <div class="flex gap-x-5 lg:row-start-2">
           <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="amount">Preço</label>
-            <InputCurrency />
+            <InputCurrency v-model="amount"/>
           </div>
           <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="quantity">Quantidade</label>
-            <InputQuantity />
+            <InputQuantity v-model="quantity"/>
           </div>
         </div>
         <div class="flex flex-col gap-y-3 lg:col-start-2">
@@ -81,7 +82,7 @@
                 <span class="text-[#505050] mt-2">Desconto: {{ discountValue }}%</span>
                 <div class="flex gap-x-4 items-center">
                   <span class="text-[#505050]">Preço final com desconto: </span>
-                  <span class="font-semibold text-lg tracking-wider">R$23,50</span>
+                  <span class="font-semibold text-lg tracking-wider">{{ finalPrice }}</span>
                 </div>
               </div>
             </div>
@@ -91,6 +92,7 @@
           <label for="productDescription">Descrição</label>
           <Textarea
             id="productDescription"
+            v-model="productDescription"
             placeholder="Camisa feita de 100% de algodão com gola V e detalhes nas costas."
             class="placeholder:text-[#959595] px-4 shadow-sm"
             rows="4"
@@ -231,29 +233,34 @@
           <div class="swiper-pagination"></div>
         </div>
         <div class="space-y-5 mt-8 lg:mt-0 lg:w-[65%] lg:px-6 px-2">
-          <h3 class="text-lg font-semibold">Camisa gola V</h3>
+          <h3 class="text-lg font-semibold">{{ productName }}</h3>
           <p class="text-lg text-[#505050]">
-            Camisa feita de 100% de algodão com gola V e detalhes nas costas.
+            {{ productDescription }}
           </p>
           <div class="space-x-3">
-            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">Feminino</span>
-            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">Camisa</span>
-            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">4 unidades</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{ selectedCategory.name }}</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{ selectedSubcategory.name }}</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{ quantity }} unidades</span>
           </div>
           <div class="flex gap-8">
             <div class="flex items-center space-x-1.5">
               <ProductPriceIcon />
-              <span class="text-lg font-semibold mt-0.5">50,00</span>
+              <span class="text-lg font-semibold mt-1">{{ amount }}</span>
             </div>
-            <div class="flex items-center space-x-1.5">
+            <div class="flex items-center space-x-1.5" v-show="finalPrice">
               <ProductDiscountIcon />
-              <span class="text-lg font-semibold mt-0.5">75%</span>
+              <span class="text-lg font-semibold mt-0.5">{{ discountValue }}%</span>
             </div>
           </div>
           <div
-            class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center"
-          >
-            <span class="font-semibold text-lg">Preço final: R$ 12,50</span>
+            class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center rounded"
+          v-if="finalPrice">
+            <span class="text-lg">Preço final: {{ finalPrice }}</span>
+          </div>
+          <div
+            class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center rounded"
+          v-else>
+            <span class="text-lg">Preço final: {{ amount }}</span>
           </div>
         </div>
       </div>
@@ -277,7 +284,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import StepItem from '@/components/StepItem.vue'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
@@ -299,13 +306,24 @@ import 'swiper/css/pagination'
 import ProductPriceIcon from '@/components/icons/ProductPriceIcon.vue'
 import ProductDiscountIcon from '@/components/icons/ProductDiscountIcon.vue'
 
-const discountValue = ref(25)
+const discountValue = ref(0)
 const checked = ref(false)
-const selectedCategory = ref()
+const selectedCategory = ref('')
 const step = ref(2)
 const selectedSubcategory = ref(1)
 const uploadImages = ref()
 const productImages = ref([])
+const amount = ref(0)
+const quantity = ref(0)
+const productDescription = ref()
+
+const finalPrice = computed(() => {
+  if (checked.value) {
+    const discount = (amount.value * discountValue.value) / 100
+    return `R$ ${(amount.value - discount).toFixed(2)}`
+  }
+  return null
+})
 
 let selectedImageIndex = null
 let selectedImage = null
@@ -346,6 +364,10 @@ const categories = ref([
   { name: 'Masculino', code: 'M' },
   { name: 'Feminino', code: 'F' },
   { name: 'Unissex', code: 'U' }
+])
+
+const subcategories = ref([
+  { name: 'Camisa' }
 ])
 
 const items = ref([
