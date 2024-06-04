@@ -2,24 +2,24 @@
   <div class="relative">
     <money3
       id="amount"
-      v-model="amount"
+      v-model="localAmount"
       v-bind="config"
       type="number"
       inputmode="numeric"
       class="input-number border rounded h-12 px-5 text-[#959595] w-full shadow-sm"
-      :class="{ 'text-inherit': amount > 0 }"
+      :class="{ 'text-inherit': localAmount > 0 }"
       min="0"
     />
     <div class="input-buttons absolute top-1 right-0 mr-0.5 space-y-1">
       <div class="flex justify-end">
-        <button class="quantity-button w-10 flex items-center justify-center" @click="amount++">
+        <button class="quantity-button w-10 flex items-center justify-center" @click="increment">
           <ChevronLeft class="rotate-90" :stroke="'#94A3B8'" :width="16" />
         </button>
       </div>
       <div class="flex justify-end">
         <button
           class="quantity-button w-10 flex items-center justify-center"
-          @click="amount > 0 ? amount-- : 0"
+          @click="decrement"
         >
           <ChevronLeft class="-rotate-90" :stroke="'#94A3B8'" :width="16" />
         </button>
@@ -29,10 +29,19 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import ChevronLeft from './icons/ChevronLeft.vue'
 
-const amount = ref()
+const props = defineProps({
+  modelValue: {
+    type: Number,
+    default: 0
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
+const localAmount = ref(props.modelValue)
+
 const config = computed(() => {
   return {
     decimal: ',',
@@ -43,6 +52,18 @@ const config = computed(() => {
     masked: false
   }
 })
+const increment = () => {
+  localAmount.value ++
+}
+const decrement = () => {
+  if (localAmount.value > 0) {
+    localAmount.value --
+  }
+}
+watch(localAmount, (newVal) => {
+  emit('update:modelValue', newVal)
+})
+
 </script>
 
 <style scoped>
