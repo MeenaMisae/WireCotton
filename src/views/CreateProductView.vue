@@ -70,7 +70,7 @@
           <label for="">{{ attribute.name }}</label>
           <div class="flex card justify-content-center">
             <Dropdown
-              v-model="selectedAttribute"
+              v-model="selectedAttribute[attribute.id]"
               :options="attribute.options"
               optionLabel="name"
               checkmark
