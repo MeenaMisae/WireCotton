@@ -348,6 +348,7 @@ const productDescription = ref()
 const categories = ref([])
 const subcategories = ref([])
 const attributes = ref([])
+const selectedAttribute = ref([])
 
 const finalPrice = computed(() => {
   if (checked.value) {
