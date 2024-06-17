@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 lg:flex overflow-hidden">
+  <div class="mt-5 overflow-hidden lg:flex">
     <div class="px-7 lg:px-0">
       <div
         class="grid grid-cols-5 lg:grid-cols-1 gap-x-4 lg:gap-5 lg:flex lg:items-center lg:flex-col lg:ml-1"
@@ -16,12 +16,12 @@
     </div>
     <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" v-show="step === 1">
       <div class="flex justify-between">
-        <h2 class="text-2xl hidden lg:block">1. Informações do produto</h2>
+        <h2 class="hidden text-2xl lg:block">1. Informações do produto</h2>
         <span class="before:content-['*'] before:text-red-500 before:mr-2"
           >Todos os itens são obrigatórios</span
         >
       </div>
-      <div class="mt-7 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-7 lg:gap-y-4">
+      <div class="space-y-5 mt-7 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-7 lg:gap-y-4">
         <div class="flex flex-col gap-y-3">
           <label for="">Nome do produto</label>
           <input
@@ -33,7 +33,7 @@
         </div>
         <div class="flex flex-col gap-y-3">
           <label for="">Categoria</label>
-          <div class="card flex justify-content-center">
+          <div class="flex card justify-content-center">
             <Dropdown
               v-model="selectedCategory"
               :options="categories"
@@ -41,13 +41,14 @@
               placeholder="Feminino"
               checkmark
               :highlightOnSelect="false"
-              class="w-full md:w-14rem h-12 items-center product-category-dropdown"
+              class="items-center w-full h-12 md:w-14rem product-category-dropdown"
+              @change="loadSubcategories"
             />
           </div>
         </div>
         <div class="flex flex-col gap-y-3 lg:col-start-2">
           <label for="">Subcategoria</label>
-          <div class="card flex justify-content-center">
+          <div class="flex card justify-content-center">
             <Dropdown
               v-model="selectedSubcategory"
               :options="subcategories"
@@ -55,18 +56,37 @@
               placeholder="Camisa"
               checkmark
               :highlightOnSelect="false"
-              class="w-full md:w-14rem h-12 items-center product-sub-category-dropdown"
+              class="items-center w-full h-12 md:w-14rem product-sub-category-dropdown"
+              @change="loadAttributes"
+            />
+          </div>
+        </div>
+
+        <div
+          class="flex flex-col gap-y-3 lg:col-start-2"
+          v-for="attribute in attributes"
+          :key="attribute.id"
+        >
+          <label for="">{{ attribute.name }}</label>
+          <div class="flex card justify-content-center">
+            <Dropdown
+              v-model="selectedAttribute"
+              :options="attribute.options"
+              optionLabel="name"
+              checkmark
+              :highlightOnSelect="false"
+              class="items-center w-full h-12 md:w-14rem product-sub-category-dropdown"
             />
           </div>
         </div>
         <div class="flex gap-x-5 lg:row-start-2">
           <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="amount">Preço</label>
-            <InputCurrency v-model="amount"/>
+            <InputCurrency v-model="amount" />
           </div>
           <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="quantity">Quantidade</label>
-            <InputQuantity v-model="quantity"/>
+            <InputQuantity v-model="quantity" />
           </div>
         </div>
         <div class="flex flex-col gap-y-3 lg:col-start-2">
@@ -80,9 +100,9 @@
               <Slider v-model="discountValue" class="w-full my-2" />
               <div class="flex flex-col">
                 <span class="text-[#505050] mt-2">Desconto: {{ discountValue }}%</span>
-                <div class="flex gap-x-4 items-center">
+                <div class="flex items-center gap-x-4">
                   <span class="text-[#505050]">Preço final com desconto: </span>
-                  <span class="font-semibold text-lg tracking-wider">{{ finalPrice }}</span>
+                  <span class="text-lg font-semibold tracking-wider">{{ finalPrice }}</span>
                 </div>
               </div>
             </div>
@@ -99,7 +119,7 @@
           />
         </div>
       </div>
-      <div class="w-full flex justify-between mt-4">
+      <div class="flex justify-between w-full mt-4">
         <RouterLink activeClass="font-semibold" to="/products">
           <Button plain text class="gap-x-3">
             <ArrowRightIcon class="rotate-180" />
@@ -118,25 +138,25 @@
       v-show="step === 2"
     >
       <div class="flex justify-between w-full">
-        <h2 class="text-2xl hidden lg:block">2. Imagens do produto</h2>
+        <h2 class="hidden text-2xl lg:block">2. Imagens do produto</h2>
         <span class="before:content-['*'] before:text-red-500 before:mr-2"
           >Obrigatório no mínimo 1 imagem.</span
         >
       </div>
-      <div class="flex w-40 justify-between items-center">
+      <div class="flex items-center justify-between w-40">
         <h3>Total de imagens:</h3>
         <span class="text-xl font-semibold">{{ productImages.length }}</span>
       </div>
-      <div class="lg:flex lg:gap-x-4 lg:max-w-full lg:overflow-x-auto space-y-4 lg:space-y-0">
+      <div class="space-y-4 lg:flex lg:gap-x-4 lg:max-w-full lg:overflow-x-auto lg:space-y-0">
         <div
           v-for="(file, index) in productImages"
           :key="index"
-          class="h-72 shadow border relative rounded-md lg:w-60 lg:mb-2"
+          class="relative border rounded-md shadow h-72 lg:w-60 lg:mb-2"
           id="gallery-items"
         >
-          <div class="h-full w-full lg:w-60">
+          <div class="w-full h-full lg:w-60">
             <div
-              class="h-20 w-full bg-gradient-to-t from-black/35 to-transparent absolute bottom-0"
+              class="absolute bottom-0 w-full h-20 bg-gradient-to-t from-black/35 to-transparent"
             ></div>
             <a
               :href="file.preview"
@@ -149,10 +169,10 @@
               <img
                 :src="file.preview"
                 alt="preview-produto"
-                class="object-cover h-full w-full object-top rounded-md"
+                class="object-cover object-top w-full h-full rounded-md"
               />
             </a>
-            <span class="absolute bottom-0 text-white p-3">{{ file.name }}</span>
+            <span class="absolute bottom-0 p-3 text-white">{{ file.name }}</span>
             <SpeedDial
               @click="selectImage(index)"
               @show="destroyPhotoSwipe"
@@ -164,7 +184,7 @@
         </div>
         <label
           for="uploadImages"
-          class="border shadow-lg flex justify-center items-center flex-col space-y-2 h-72 min-w-60 cursor-pointer rounded-lg"
+          class="flex flex-col items-center justify-center space-y-2 border rounded-lg shadow-lg cursor-pointer h-72 min-w-60"
         >
           <CloudUploadIcon />
           <span class="text-[#626262]">Adicionar imagem</span>
@@ -179,7 +199,7 @@
           accept="image/*"
         />
       </div>
-      <div class="w-full flex justify-between">
+      <div class="flex justify-between w-full">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
           Informações
@@ -191,20 +211,20 @@
       </div>
     </div>
     <div class="mt-10 lg:mt-0 lg:w-[80%] lg:px-16" id="review-gallery" v-show="step === 3">
-      <h2 class="text-2xl hidden lg:block lg:mb-6">3. Revisão do produto</h2>
+      <h2 class="hidden text-2xl lg:block lg:mb-6">3. Revisão do produto</h2>
       <div class="lg:flex">
         <div class="swiper w-80">
           <div class="swiper-wrapper w-96">
             <div
               v-for="image in productImages"
               :key="image.preview"
-              class="swiper-slide flex items-center"
+              class="flex items-center swiper-slide"
             >
               <a :href="image.preview" data-pswp-width="500" data-pswp-height="657">
                 <img
                   :src="image.preview"
                   alt="preview-produto"
-                  class="object-cover h-96 w-full rounded-lg shadow-md border object-top"
+                  class="object-cover object-top w-full border rounded-lg shadow-md h-96"
                 />
               </a>
             </div>
@@ -238,14 +258,20 @@
             {{ productDescription }}
           </p>
           <div class="space-x-3">
-            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{ selectedCategory.name }}</span>
-            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{ selectedSubcategory.name }}</span>
-            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{ quantity }} unidades</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{
+              selectedCategory.name
+            }}</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{
+              selectedSubcategory.name
+            }}</span>
+            <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded"
+              >{{ quantity }} unidades</span
+            >
           </div>
           <div class="flex gap-8">
             <div class="flex items-center space-x-1.5">
               <ProductPriceIcon />
-              <span class="text-lg font-semibold mt-1">{{ amount }}</span>
+              <span class="mt-1 text-lg font-semibold">{{ amount }}</span>
             </div>
             <div class="flex items-center space-x-1.5" v-show="finalPrice">
               <ProductDiscountIcon />
@@ -254,17 +280,19 @@
           </div>
           <div
             class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center rounded"
-          v-if="finalPrice">
+            v-if="finalPrice"
+          >
             <span class="text-lg">Preço final: {{ finalPrice }}</span>
           </div>
           <div
             class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center rounded"
-          v-else>
+            v-else
+          >
             <span class="text-lg">Preço final: {{ amount }}</span>
           </div>
         </div>
       </div>
-      <div class="w-full flex justify-between mt-8">
+      <div class="flex justify-between w-full mt-8">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
           Imagens
@@ -305,17 +333,21 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import ProductPriceIcon from '@/components/icons/ProductPriceIcon.vue'
 import ProductDiscountIcon from '@/components/icons/ProductDiscountIcon.vue'
+import axios from 'axios'
 
 const discountValue = ref(0)
 const checked = ref(false)
 const selectedCategory = ref('')
-const step = ref(2)
+const step = ref(1)
 const selectedSubcategory = ref(1)
 const uploadImages = ref()
 const productImages = ref([])
 const amount = ref(0)
 const quantity = ref(0)
 const productDescription = ref()
+const categories = ref([])
+const subcategories = ref([])
+const attributes = ref([])
 
 const finalPrice = computed(() => {
   if (checked.value) {
@@ -358,17 +390,58 @@ onMounted(() => {
       el: '.swiper-pagination'
     }
   })
+
+  axios
+    .get(`${import.meta.env.VITE_ROOT_API}/products/categories`)
+    .then((res) => {
+      const response = res.data.categories
+      const parentCategories = response.filter((category) => category.parent_id === null)
+      const categoryArray = parentCategories.map((category) => ({
+        name: category.name,
+        code: category.id
+      }))
+      categories.value = categoryArray
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 })
 
-const categories = ref([
-  { name: 'Masculino', code: 'M' },
-  { name: 'Feminino', code: 'F' },
-  { name: 'Unissex', code: 'U' }
-])
+const loadSubcategories = () => {
+  axios
+    .get(`${import.meta.env.VITE_ROOT_API}/products/categories`)
+    .then((res) => {
+      const response = res.data.categories
+      const children = response.filter(
+        (category) => category.parent_id === selectedCategory.value.code
+      )
+      const subcategoryArray = children.map((child) => ({
+        name: child.name,
+        code: child.id
+      }))
+      subcategories.value = subcategoryArray
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
 
-const subcategories = ref([
-  { name: 'Camisa' }
-])
+const loadAttributes = () => {
+  axios
+    .get(`${import.meta.env.VITE_ROOT_API}/products/attributes/${selectedSubcategory.value.code}`)
+    .then((res) => {
+      const response = res.data
+      attributes.value = response.attributes.map((attribute) => {
+        return {
+          ...attribute,
+          options: attribute.attribute_options.map((option) => ({
+            name: option.value,
+            code: option.id
+          }))
+        }
+      })
+    })
+}
 
 const items = ref([
   {
