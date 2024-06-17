@@ -268,6 +268,15 @@
               >{{ quantity }} unidades</span
             >
           </div>
+          <div class="flex">
+            <div v-for="attribute in selectedAttribute" :key="attribute">
+              <div v-if="attribute" class="mr-3">
+                <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded"
+                >{{ attribute.name }}</span
+              >
+              </div>
+            </div>
+          </div>
           <div class="flex gap-8">
             <div class="flex items-center space-x-1.5">
               <ProductPriceIcon />
