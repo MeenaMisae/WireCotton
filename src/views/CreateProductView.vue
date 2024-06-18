@@ -271,9 +271,9 @@
           <div class="flex">
             <div v-for="attribute in selectedAttribute" :key="attribute">
               <div v-if="attribute" class="mr-3">
-                <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded"
-                >{{ attribute.name }}</span
-              >
+                <span class="border shadow-md px-2 py-1 bg-[#F8F8F8] rounded">{{
+                  attribute.name
+                }}</span>
               </div>
             </div>
           </div>
@@ -313,6 +313,7 @@
           iconPos="right"
           plain
           text
+          @click="saveProduct"
         >
         </Button>
       </div>
@@ -358,6 +359,32 @@ const categories = ref([])
 const subcategories = ref([])
 const attributes = ref([])
 const selectedAttribute = ref([])
+const productName = ref('')
+
+const saveProduct = () => {
+  const mapAttributes = attributes.value.map((attribute) => ({
+    id: attribute.id,
+    name: attribute.name
+  }))
+  const form = new FormData()
+  form.append('name', productName.value)
+  form.append('category', JSON.stringify(selectedCategory.value))
+  form.append('subcategory', JSON.stringify(selectedSubcategory.value))
+  form.append('description', productDescription.value)
+  form.append('amount', amount.value)
+  form.append('quantity', quantity.value)
+  form.append('attributes', JSON.stringify(mapAttributes))
+  form.append('attributeOptions', JSON.stringify(selectedAttribute.value))
+
+  axios
+    .post(`${import.meta.env.VITE_ROOT_API}/products`, form)
+    .then((response) => {
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.log(error.data)
+    })
+}
 
 const finalPrice = computed(() => {
   if (checked.value) {
