@@ -288,10 +288,10 @@
             </div>
           </div>
           <div
-            class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center rounded"
+            class="border shadow-md bg-[#fafafa] py-2 px-5 w-fit h-10 flex items-center justify-center rounded"
             v-if="finalPrice"
           >
-            <span class="text-lg">Preço final: {{ finalPrice }}</span>
+            <span class="text-lg">Preço final: R$ {{ finalPrice }}</span>
           </div>
           <div
             class="border shadow-md bg-[#fafafa] py-2 px-5 w-52 h-10 flex items-center justify-center rounded"
@@ -366,19 +366,35 @@ const saveProduct = () => {
     id: attribute.id,
     name: attribute.name
   }))
+  // console.log(productImages.value)
+  // const mapImages = productImages.value.map((image) => ({
+  //   file: image.file
+  // }))
+  // console.log(mapImages)
   const form = new FormData()
   form.append('name', productName.value)
   form.append('category', JSON.stringify(selectedCategory.value))
   form.append('subcategory', JSON.stringify(selectedSubcategory.value))
   form.append('description', productDescription.value)
-  form.append('amount', amount.value)
   form.append('quantity', quantity.value)
   form.append('attributes', JSON.stringify(mapAttributes))
   form.append('attributeOptions', JSON.stringify(selectedAttribute.value))
-
+  if (discountValue.value > 0) {
+    form.append('finalPrice', finalPrice.value)
+    form.append('discount', discountValue.value)
+    form.append('initialPrice', amount.value)
+  } else {
+    form.append('amount', amount.value)
+  }
+  // form.append('images', productImages.value)
   axios
-    .post(`${import.meta.env.VITE_ROOT_API}/products`, form)
+    .post(`${import.meta.env.VITE_ROOT_API}/products`, form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
     .then((response) => {
+      console.log(files)
       console.log(response.data)
     })
     .catch((error) => {
@@ -389,7 +405,7 @@ const saveProduct = () => {
 const finalPrice = computed(() => {
   if (checked.value) {
     const discount = (amount.value * discountValue.value) / 100
-    return `R$ ${(amount.value - discount).toFixed(2)}`
+    return `${(amount.value - discount).toFixed(2)}`
   }
   return null
 })
@@ -524,6 +540,11 @@ const imageOptions = ref([
         const index = productImages.value.indexOf(selectedImage)
         if (index !== -1) {
           productImages.value.splice(index, 1)
+          Object.values(files).forEach((file) => {
+            if (file === selectedImage.file) {
+              // erase file
+            }
+          })
           selectedImage = null
         }
       }
@@ -548,14 +569,19 @@ function previewImages(e) {
     if (file) {
       productImages.value[selectedImageIndex] = {
         name: file.name,
-        preview: URL.createObjectURL(file)
+        preview: URL.createObjectURL(file),
+        file: file
       }
       updateFile = null
       return
     }
   }
   Object.values(files).forEach((element) => {
-    productImages.value.push({ name: element.name, preview: URL.createObjectURL(element) })
+    productImages.value.push({
+      name: element.name,
+      preview: URL.createObjectURL(element),
+      file: element
+    })
     const swiper = new Swiper('.swiper', {
       modules: [Pagination, Navigation],
       direction: 'horizontal',
