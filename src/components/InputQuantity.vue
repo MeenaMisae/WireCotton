@@ -5,22 +5,20 @@
       v-model="localQuantity"
       type="number"
       inputmode="numeric"
-      class="input-number border rounded h-12 px-5 text-[#959595] w-full shadow-sm"
+      class="input-number border rounded h-12 px-5 text-[#959595] w-full shadow-sm placeholder:text-[#959595]"
       :class="{ 'text-inherit': localQuantity > 0 }"
       min="1"
       oninput="this.value = Math.round(this.value)"
+      placeholder="0"
     />
     <div class="input-buttons absolute top-1 right-0 mr-0.5 space-y-1">
       <div class="flex justify-end">
-        <button class="quantity-button w-10 flex items-center justify-center" @click="increment">
+        <button class="flex items-center justify-center w-10 quantity-button" @click="increment">
           <ChevronLeft class="rotate-90" :stroke="'#94A3B8'" :width="16" />
         </button>
       </div>
       <div class="flex justify-end">
-        <button
-          class="quantity-button w-10 flex items-center justify-center"
-          @click="decrement"
-        >
+        <button class="flex items-center justify-center w-10 quantity-button" @click="decrement">
           <ChevronLeft class="-rotate-90" :stroke="'#94A3B8'" :width="16" />
         </button>
       </div>
@@ -51,7 +49,7 @@ const increment = () => {
 
 const decrement = () => {
   if (localQuantity.value > 0) {
-    localQuantity.value --
+    localQuantity.value--
   }
 }
 </script>
