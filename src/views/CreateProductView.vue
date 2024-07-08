@@ -1,6 +1,7 @@
 <template>
   <div class="mt-5 overflow-hidden lg:flex">
     <div class="px-7 lg:px-0">
+      <Toast />
       <div
         class="grid grid-cols-5 lg:grid-cols-1 gap-x-4 lg:gap-5 lg:flex lg:items-center lg:flex-col lg:ml-1"
       >
@@ -14,6 +15,7 @@
         />
       </div>
     </div>
+
     <div class="mt-10 lg:mt-0 lg:w-full lg:px-16" v-show="step === 1">
       <div class="flex justify-between">
         <h2 class="hidden text-2xl lg:block">1. Informações do produto</h2>
@@ -21,7 +23,7 @@
           >Todos os itens são obrigatórios</span
         >
       </div>
-      <div class="space-y-5 mt-7 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-7 lg:gap-y-4">
+      <div class="space-y-5 mt-9 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-7 lg:gap-y-6">
         <div class="flex flex-col gap-y-3">
           <label for="">Nome do produto</label>
           <input
@@ -30,6 +32,9 @@
             placeholder="Camisa gola V"
             v-model="productName"
           />
+          <div class="h-2">
+            <span v-if="errors?.name" class="text-red-500">{{ errors.name[0] }}</span>
+          </div>
         </div>
         <div class="flex flex-col gap-y-3">
           <label for="">Categoria</label>
@@ -44,6 +49,9 @@
               class="items-center w-full h-12 md:w-14rem product-category-dropdown"
               @change="loadSubcategories"
             />
+          </div>
+          <div class="h-2">
+            <span v-if="errors?.category" class="text-red-500">{{ errors.category[0] }}</span>
           </div>
         </div>
         <div class="flex flex-col gap-y-3 lg:col-start-2">
@@ -60,55 +68,52 @@
               @change="loadAttributes"
             />
           </div>
+          <div class="h-2">
+            <span v-if="errors?.subcategory" class="text-red-500">{{ errors.subcategory[0] }}</span>
+          </div>
         </div>
-
-        <div
-          class="flex flex-col gap-y-3 lg:col-start-2"
-          v-for="attribute in attributes"
-          :key="attribute.id"
-        >
-          <label for="">{{ attribute.name }}</label>
-          <div class="flex card justify-content-center">
+        <div class="flex flex-col gap-y-3 lg:col-start-2" v-if="attributes.length > 0">
+          <div
+            class="flex flex-col card justify-content-center"
+            v-for="attribute in attributes"
+            :key="attribute.id"
+          >
+            <label for="">{{ attribute.name }}</label>
             <Dropdown
               v-model="selectedAttribute[attribute.id]"
               :options="attribute.options"
               optionLabel="name"
               checkmark
               :highlightOnSelect="false"
-              class="items-center w-full h-12 md:w-14rem product-sub-category-dropdown"
+              class="flex items-center w-full h-12 mt-1 md:w-14rem product-sub-category-dropdown"
             />
+            <div class="h-6">
+              <span v-if="errors?.attributeOptions" class="text-red-500">{{
+                errors.attributeOptions[0]
+              }}</span>
+            </div>
           </div>
         </div>
         <div class="flex gap-x-5 lg:row-start-2">
           <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="amount">Preço</label>
             <InputCurrency v-model="amount" />
+            <div class="h-2">
+              <span v-if="errors?.amount" class="text-red-500">{{ errors.amount[0] }}</span>
+            </div>
           </div>
           <div class="flex flex-col gap-y-3 w-[50%]">
             <label for="quantity">Quantidade</label>
             <InputQuantity v-model="quantity" />
-          </div>
-        </div>
-        <div class="flex flex-col gap-y-3 lg:col-start-2">
-          <span>Promoção</span>
-          <div class="flex items-center gap-x-3">
-            <Checkbox v-model="checked" :binary="true" inputId="discountCheckbox" />
-            <label for="discountCheckbox" class="text-[#505050]">Produto promocional?</label>
-          </div>
-          <transition name="fade">
-            <div v-show="checked" class="space-y-3 lg:space-y-1">
-              <Slider v-model="discountValue" class="w-full my-2" />
-              <div class="flex flex-col">
-                <span class="text-[#505050] mt-2">Desconto: {{ discountValue }}%</span>
-                <div class="flex items-center gap-x-4">
-                  <span class="text-[#505050]">Preço final com desconto: </span>
-                  <span class="text-lg font-semibold tracking-wider">{{ finalPrice }}</span>
-                </div>
-              </div>
+            <div class="h-2">
+              <span v-if="errors?.quantity" class="w-full text-red-500">{{
+                errors.quantity[0]
+              }}</span>
             </div>
-          </transition>
+          </div>
         </div>
-        <div class="flex flex-col gap-y-3 lg:col-start-1 lg:row-start-3">
+
+        <div class="flex flex-col pt-2 lg:pt-0 gap-y-3 lg:col-start-1 lg:row-start-3">
           <label for="productDescription">Descrição</label>
           <Textarea
             id="productDescription"
@@ -117,6 +122,29 @@
             class="placeholder:text-[#959595] px-4 shadow-sm"
             rows="4"
           />
+          <div class="h-2">
+            <span v-if="errors?.description" class="text-red-500">{{ errors.description[0] }}</span>
+          </div>
+          <span>Promoção</span>
+          <div class="flex items-center gap-x-3">
+            <Checkbox v-model="checked" :binary="true" inputId="discountCheckbox" />
+            <label for="discountCheckbox" class="text-[#505050]">Produto promocional?</label>
+          </div>
+          <transition name="fade">
+            <div v-show="checked" class="space-y-3 lg:space-y-1">
+              <Slider v-model="discountValue" class="w-full my-2" />
+              <div class="flex flex-col lg:space-y-2">
+                <span class="text-[#505050] mt-2">Desconto: {{ discountValue }}%</span>
+                <div class="flex items-center gap-x-4">
+                  <span class="text-[#505050]">Preço final com desconto: </span>
+                  <span class="text-lg font-semibold tracking-wider">{{ finalPrice }}</span>
+                </div>
+              </div>
+              <div class="h-2">
+                <span v-if="errors?.discount" class="text-red-500">{{ errors.discount[0] }}</span>
+              </div>
+            </div>
+          </transition>
         </div>
       </div>
       <div class="flex justify-between w-full mt-4">
@@ -126,7 +154,7 @@
             Voltar
           </Button>
         </RouterLink>
-        <Button plain text class="gap-x-3" @click="step++">
+        <Button plain text class="gap-x-3" @click="goToImageStep">
           Imagens
           <ArrowRightIcon class="" />
         </Button>
@@ -199,12 +227,15 @@
           accept="image/*"
         />
       </div>
+      <div class="h-4">
+        <span class="text-red-500" v-if="errors?.files">{{ errors?.files[0] }}</span>
+      </div>
       <div class="flex justify-between w-full">
         <Button plain text class="gap-x-3" @click="step--">
           <ArrowRightIcon class="rotate-180" />
           Informações
         </Button>
-        <Button plain text class="gap-x-3" @click="step++">
+        <Button plain text class="gap-x-3" @click="goToReviewStep">
           Revisão
           <ArrowRightIcon class="" />
         </Button>
@@ -344,49 +375,128 @@ import 'swiper/css/pagination'
 import ProductPriceIcon from '@/components/icons/ProductPriceIcon.vue'
 import ProductDiscountIcon from '@/components/icons/ProductDiscountIcon.vue'
 import axios from 'axios'
+import { useToast } from 'primevue/usetoast'
+import { useRouter } from 'vue-router'
 
 const discountValue = ref(0)
 const checked = ref(false)
 const selectedCategory = ref('')
 const step = ref(1)
-const selectedSubcategory = ref(1)
+const selectedSubcategory = ref('')
 const uploadImages = ref()
 const productImages = ref([])
 const amount = ref(0)
-const quantity = ref(0)
+const quantity = ref('')
 const productDescription = ref()
 const categories = ref([])
 const subcategories = ref([])
 const attributes = ref([])
 const selectedAttribute = ref([])
 const productName = ref('')
+let errors = ref({})
+const toast = useToast()
+const router = useRouter()
+
+const showSuccess = () => {
+  toast.add({
+    severity: 'success',
+    summary: 'Produto criado com sucesso!',
+    life: 3000
+  })
+}
+
+const goToReviewStep = () => {
+  const form = new FormData()
+  productImages.value.forEach((image) => {
+    form.append('files[]', image.file)
+  })
+  axios
+    .post(`${import.meta.env.VITE_ROOT_API}/products/validate-images`, form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then((response) => {
+      step.value++
+    })
+    .catch((error) => {
+      if (error.response.status === 422) {
+        errors.value = error.response.data.errors
+      }
+      setTimeout(() => {
+        errors.value = ''
+      }, 1000)
+    })
+}
+const goToImageStep = () => {
+  const mapAttributes = attributes.value.map((attribute) => ({
+    id: attribute.id,
+    name: attribute.name
+  }))
+  const form = new FormData()
+  form.append('name', productName.value)
+  form.append('category', selectedCategory.value ? JSON.stringify(selectedCategory.value) : '')
+  form.append(
+    'subcategory',
+    selectedSubcategory.value ? JSON.stringify(selectedSubcategory.value) : ''
+  )
+  form.append('description', productDescription.value ?? '')
+  form.append('quantity', quantity.value)
+  console.log(quantity.value)
+  form.append('attributes', mapAttributes.length >= 1 ? JSON.stringify(mapAttributes) : '')
+  form.append(
+    'attributeOptions',
+    selectedAttribute.value.length >= 1 ? JSON.stringify(selectedAttribute.value) : ''
+  )
+  if (checked.value) {
+    form.append('finalPrice', parseFloat(finalPrice.value) > 0 ? finalPrice.value : '')
+    form.append('discount', discountValue.value)
+  } else {
+    form.append('amount', amount.value > 0 ? amount.value : '')
+  }
+  axios
+    .post(`${import.meta.env.VITE_ROOT_API}/products/validate-info`, form)
+    .then((response) => {
+      step.value++
+    })
+    .catch((error) => {
+      if (error.response.status === 422) {
+        errors.value = error.response.data.errors
+      }
+      setTimeout(() => {
+        errors.value = ''
+      }, 4000)
+    })
+}
 
 const saveProduct = () => {
   const mapAttributes = attributes.value.map((attribute) => ({
     id: attribute.id,
     name: attribute.name
   }))
-  // console.log(productImages.value)
-  // const mapImages = productImages.value.map((image) => ({
-  //   file: image.file
-  // }))
-  // console.log(mapImages)
   const form = new FormData()
   form.append('name', productName.value)
-  form.append('category', JSON.stringify(selectedCategory.value))
-  form.append('subcategory', JSON.stringify(selectedSubcategory.value))
-  form.append('description', productDescription.value)
+  form.append('category', selectedCategory.value ? JSON.stringify(selectedCategory.value) : '')
+  form.append(
+    'subcategory',
+    selectedSubcategory.value ? JSON.stringify(selectedSubcategory.value) : ''
+  )
+  form.append('description', productDescription.value ?? '')
   form.append('quantity', quantity.value)
-  form.append('attributes', JSON.stringify(mapAttributes))
-  form.append('attributeOptions', JSON.stringify(selectedAttribute.value))
-  if (discountValue.value > 0) {
-    form.append('finalPrice', finalPrice.value)
+  form.append('attributes', mapAttributes.length >= 1 ? JSON.stringify(mapAttributes) : '')
+  form.append(
+    'attributeOptions',
+    selectedAttribute.value.length >= 1 ? JSON.stringify(selectedAttribute.value) : ''
+  )
+  if (checked.value) {
+    form.append('finalPrice', parseFloat(finalPrice.value) > 0 ? finalPrice.value : '')
     form.append('discount', discountValue.value)
-    form.append('initialPrice', amount.value)
   } else {
-    form.append('amount', amount.value)
+    form.append('amount', amount.value > 0 ? amount.value : '')
   }
-  // form.append('images', productImages.value)
+  productImages.value.forEach((image) => {
+    form.append('files[]', image.file)
+  })
   axios
     .post(`${import.meta.env.VITE_ROOT_API}/products`, form, {
       headers: {
@@ -394,11 +504,16 @@ const saveProduct = () => {
       }
     })
     .then((response) => {
-      console.log(files)
-      console.log(response.data)
+      showSuccess()
+      router.push({ path: '/products' })
     })
     .catch((error) => {
-      console.log(error.data)
+      if (error.response.status === 422) {
+        errors.value = error.response.data.errors
+      }
+      setTimeout(() => {
+        errors.value = ''
+      }, 1000)
     })
 }
 
@@ -540,11 +655,15 @@ const imageOptions = ref([
         const index = productImages.value.indexOf(selectedImage)
         if (index !== -1) {
           productImages.value.splice(index, 1)
-          Object.values(files).forEach((file) => {
-            if (file === selectedImage.file) {
-              // erase file
-            }
-          })
+          // Object.values(files).forEach((index, file) => {
+          //   console.log(index[file])
+
+          //   if (file === selectedImage.file) {
+          //     // erase file
+          //     // delete file[index]
+          //     console.log(file[index])
+          //   }
+          // })
           selectedImage = null
         }
       }
