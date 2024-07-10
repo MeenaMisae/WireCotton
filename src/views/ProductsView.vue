@@ -308,41 +308,7 @@ const hideDialog = () => {
   productDialog.value = false
   submitted.value = false
 }
-const saveProduct = () => {
-  submitted.value = true
 
-  if (product?.value.name?.trim()) {
-    if (product.value.id) {
-      product.value.inventoryStatus = product.value.inventoryStatus.value
-        ? product.value.inventoryStatus.value
-        : product.value.inventoryStatus
-      products.value[findIndexById(product.value.id)] = product.value
-      toast.add({
-        severity: 'success',
-        summary: 'Successful',
-        detail: 'Product Updated',
-        life: 3000
-      })
-    } else {
-      product.value.id = createId()
-      product.value.code = createId()
-      product.value.image = 'product-placeholder.svg'
-      product.value.inventoryStatus = product.value.inventoryStatus
-        ? product.value.inventoryStatus.value
-        : 'INSTOCK'
-      products.value.push(product.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Successful',
-        detail: 'Product Created',
-        life: 3000
-      })
-    }
-
-    productDialog.value = false
-    product.value = {}
-  }
-}
 const editProduct = (prod) => {
   product.value = { ...prod }
   productDialog.value = true
@@ -369,25 +335,7 @@ const deleteProduct = () => {
       console.log(error)
     })
 }
-const findIndexById = (id) => {
-  let index = -1
-  for (let i = 0; i < products.value.length; i++) {
-    if (products.value[i].id === id) {
-      index = i
-      break
-    }
-  }
 
-  return index
-}
-const createId = () => {
-  let id = ''
-  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  for (var i = 0; i < 5; i++) {
-    id += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return id
-}
 const exportCSV = () => {
   dt.value.exportCSV()
 }
