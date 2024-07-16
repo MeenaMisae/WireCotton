@@ -97,18 +97,18 @@
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '450px' }"
-      header="Product Details"
+      header="Detalhes do produto"
       :modal="true"
     >
       <div class="flex flex-col gap-6">
         <img
-          v-if="product.image"
-          :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`"
+          v-if="product.images"
+          :src="product.images[0]"
           :alt="product.image"
-          class="block pb-4 m-auto"
+          class="block m-auto rounded h-96"
         />
         <div>
-          <label for="name" class="block mb-3 font-bold">Name</label>
+          <label for="name" class="block mb-3 font-bold">Nome</label>
           <InputText
             id="name"
             v-model.trim="product.name"
@@ -116,96 +116,79 @@
             autofocus
             :invalid="submitted && !product.name"
             fluid
+            class="w-full"
           />
           <small v-if="submitted && !product.name" class="text-red-500">Name is required.</small>
         </div>
         <div>
-          <label for="description" class="block mb-3 font-bold">Description</label>
+          <label for="description" class="block mb-3 font-bold">Descrição</label>
           <Textarea
             id="description"
             v-model="product.description"
             required="true"
-            rows="3"
+            rows="5"
             cols="20"
             fluid
+            class="w-full"
           />
         </div>
         <div>
-          <label for="inventoryStatus" class="block mb-3 font-bold">Inventory Status</label>
-          <Select
-            id="inventoryStatus"
-            v-model="product.inventoryStatus"
-            :options="statuses"
-            optionLabel="label"
-            placeholder="Select a Status"
-            fluid
-          ></Select>
-        </div>
-
-        <div>
-          <span class="block mb-4 font-bold">Category</span>
+          <span class="block mb-4 font-bold">Categoria</span>
           <div class="grid grid-cols-12 gap-4">
-            <div class="flex items-center col-span-6 gap-2">
+            <div
+              class="flex items-center col-span-6 gap-2"
+              v-for="category in categories"
+              :key="category"
+            >
               <RadioButton
-                id="category1"
+                :id="category.id"
                 v-model="product.category"
                 name="category"
-                value="Accessories"
+                :value="category.name"
               />
-              <label for="category1">Accessories</label>
-            </div>
-            <div class="flex items-center col-span-6 gap-2">
-              <RadioButton
-                id="category2"
-                v-model="product.category"
-                name="category"
-                value="Clothing"
-              />
-              <label for="category2">Clothing</label>
-            </div>
-            <div class="flex items-center col-span-6 gap-2">
-              <RadioButton
-                id="category3"
-                v-model="product.category"
-                name="category"
-                value="Electronics"
-              />
-              <label for="category3">Electronics</label>
-            </div>
-            <div class="flex items-center col-span-6 gap-2">
-              <RadioButton
-                id="category4"
-                v-model="product.category"
-                name="category"
-                value="Fitness"
-              />
-              <label for="category4">Fitness</label>
+              <label :for="category.id">{{ category.name }}</label>
             </div>
           </div>
         </div>
-
-        <div class="grid grid-cols-12 gap-4">
-          <div class="col-span-6">
-            <label for="price" class="block mb-3 font-bold">Price</label>
+        <div>
+          <span class="block mb-4 font-bold">Subcategoria</span>
+          <div class="grid grid-cols-12 gap-4">
+            <div
+              class="flex items-center col-span-6 gap-2"
+              v-for="subcategory in subcategories"
+              :key="subcategory"
+            >
+              <RadioButton
+                :id="subcategory.id"
+                v-model="product.subcategory"
+                name="subcategory"
+                :value="subcategory.name"
+              />
+              <label :for="subcategory.id">{{ subcategory.name }}</label>
+            </div>
+          </div>
+        </div>
+        <div class="w-full space-y-4">
+          <div class="">
+            <label for="price" class="block mb-3 font-bold">Preço</label>
             <InputNumber
               id="price"
               v-model="product.price"
               mode="currency"
-              currency="USD"
-              locale="en-US"
+              currency="BRL"
+              locale="pt-BR"
               fluid
             />
           </div>
-          <div class="col-span-6">
-            <label for="quantity" class="block mb-3 font-bold">Quantity</label>
+          <div class="">
+            <label for="quantity" class="block mb-3 font-bold">Quantidade</label>
             <InputNumber id="quantity" v-model="product.quantity" integeronly fluid />
           </div>
         </div>
       </div>
-
       <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="saveProduct" />
+        <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Salvar" icon="pi pi-check" @click="saveProduct" />
       </template>
     </Dialog>
 
@@ -259,13 +242,15 @@ import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import axios from 'axios'
 import Toast from 'primevue/toast'
+import Textarea from 'primevue/textarea'
+import RadioButton from 'primevue/radiobutton'
+import InputNumber from 'primevue/inputnumber'
 
 onMounted(() => {
   axios
     .get(`${import.meta.env.VITE_ROOT_API}/products`)
     .then((response) => {
       products.value = response.data
-      console.log(response.data)
     })
     .catch((error) => {
       console.log(error)
@@ -289,6 +274,8 @@ const statuses = ref([
   { label: 'BAIXO ESTOQUE', value: 'lowstock' },
   { label: 'FORA DE ESTOQUE', value: 'outofstock' }
 ])
+const categories = ref()
+const subcategories = ref()
 
 const formatCurrency = (value) => {
   if (value) {
@@ -308,10 +295,28 @@ const hideDialog = () => {
   productDialog.value = false
   submitted.value = false
 }
-
 const editProduct = (prod) => {
   product.value = { ...prod }
   productDialog.value = true
+  axios
+    .get(`${import.meta.env.VITE_ROOT_API}/products/categories`)
+    .then((response) => {
+      categories.value = response.data.categories.filter((category) => category.parent_id === null)
+      subcategories.value = response.data.categories.filter(
+        (category) => category.parent_id !== null
+      )
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  axios
+    .get(`${import.meta.env.VITE_ROOT_API}/products/${product.value.id}`)
+    .then((response) => {
+      // console.log(response)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 const confirmDeleteProduct = (prod) => {
   product.value = prod
@@ -323,7 +328,6 @@ const deleteProduct = () => {
   axios
     .delete(`${import.meta.env.VITE_ROOT_API}/products/${product.value.id}`)
     .then((response) => {
-      console.log(response)
       toast.add({
         severity: 'success',
         summary: 'Sucesso!',
