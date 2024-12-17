@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@primevue/core": "^4.2.5",
     "axios": "^1.7.2",
     "photoswipe": "^5.4.3",
     "primeicons": "^6.0.1",
