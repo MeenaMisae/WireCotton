@@ -7,53 +7,29 @@
           <RouterLink to="/products/create">
             <Button label="Novo" icon="pi pi-plus" class="mr-2" @click="openNew" />
           </RouterLink>
-          <Button
-            label="Excluir"
-            icon="pi pi-trash"
-            severity="danger"
-            @click="confirmDeleteSelected"
-            :disabled="!selectedProducts || !selectedProducts.length"
-          />
+          <Button label="Excluir" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected"
+            :disabled="!selectedProducts || !selectedProducts.length" />
         </template>
 
         <template #end>
           <InputText v-model="filters['global'].value" placeholder="Pesquisar..." />
-          <FileUpload
-            mode="basic"
-            accept="image/*"
-            :maxFileSize="1000000"
-            label="Import"
-            chooseLabel="Import"
-            class="mr-2"
-            auto
-          />
+          <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import"
+            class="mr-2" auto />
           <Button label="Exportar" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
         </template>
       </Toolbar>
 
-      <DataTable
-        ref="dt"
-        v-model:selection="selectedProducts"
-        :value="products"
-        dataKey=""
-        :paginator="true"
-        :rows="4"
+      <DataTable ref="dt" v-model:selection="selectedProducts" :value="products" dataKey="" :paginator="true" :rows="4"
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Mostrando {first} de {last} do total de {totalRecords} produtos"
-      >
+        currentPageReportTemplate="Mostrando {first} de {last} do total de {totalRecords} produtos">
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="code" header="SKU" sortable style="min-width: 12rem"></Column>
         <Column field="name" header="Nome" sortable style="min-width: 12rem"> </Column>
         <Column header="Imagem" style="min-width: 12rem">
           <template #body="slotProps">
-            <img
-              :src="slotProps.data.images[0]"
-              :alt="slotProps.data.image"
-              class="rounded"
-              style="width: 64px"
-            />
+            <img :src="slotProps.data.images[0]" :alt="slotProps.data.image" class="rounded" style="width: 64px" />
           </template>
         </Column>
         <Column field="price" header="Preço" sortable style="min-width: 12rem">
@@ -67,85 +43,38 @@
         </Column>
         <Column field="inventoryStatus" header="Status" sortable style="min-width: 12rem">
           <template #body="slotProps">
-            <Tag
-              :value="slotProps.data.inventoryStatus"
-              :severity="getStatusLabel(slotProps.data.inventoryStatus)"
-            />
+            <Tag :value="slotProps.data.inventoryStatus" :severity="getStatusLabel(slotProps.data.inventoryStatus)" />
           </template>
         </Column>
         <Column :exportable="false" style="min-width: 11rem">
           <template #body="slotProps">
-            <Button
-              icon="pi pi-pencil"
-              outlined
-              rounded
-              class="mr-5"
-              @click="editProduct(slotProps.data)"
-            />
-            <Button
-              icon="pi pi-trash"
-              outlined
-              rounded
-              severity="danger"
-              @click="confirmDeleteProduct(slotProps.data)"
-            />
+            <Button icon="pi pi-pencil" outlined rounded class="mr-5" @click="editProduct(slotProps.data)" />
+            <Button icon="pi pi-trash" outlined rounded severity="danger"
+              @click="confirmDeleteProduct(slotProps.data)" />
           </template>
         </Column>
       </DataTable>
     </div>
 
-    <Dialog
-      v-model:visible="productDialog"
-      :style="{ width: '450px' }"
-      header="Detalhes do produto"
-      :modal="true"
-    >
+    <Dialog v-model:visible="productDialog" :style="{ width: '450px' }" header="Detalhes do produto" :modal="true">
       <div class="flex flex-col gap-6">
-        <img
-          v-if="product.images"
-          :src="product.images[0]"
-          :alt="product.image"
-          class="block m-auto rounded h-96"
-        />
+        <img v-if="product.images" :src="product.images[0]" :alt="product.image" class="block m-auto rounded h-96" />
         <div>
           <label for="name" class="block mb-3 font-bold">Nome</label>
-          <InputText
-            id="name"
-            v-model.trim="product.name"
-            required="true"
-            autofocus
-            :invalid="submitted && !product.name"
-            fluid
-            class="w-full"
-          />
+          <InputText id="name" v-model.trim="product.name" required="true" autofocus
+            :invalid="submitted && !product.name" fluid class="w-full" />
           <small v-if="submitted && !product.name" class="text-red-500">Name is required.</small>
         </div>
         <div>
           <label for="description" class="block mb-3 font-bold">Descrição</label>
-          <Textarea
-            id="description"
-            v-model="product.description"
-            required="true"
-            rows="5"
-            cols="20"
-            fluid
-            class="w-full"
-          />
+          <Textarea id="description" v-model="product.description" required="true" rows="5" cols="20" fluid
+            class="w-full" />
         </div>
         <div>
           <span class="block mb-4 font-bold">Categoria</span>
           <div class="grid grid-cols-12 gap-4">
-            <div
-              class="flex items-center col-span-6 gap-2"
-              v-for="category in categories"
-              :key="category"
-            >
-              <RadioButton
-                :id="category.id"
-                v-model="product.category"
-                name="category"
-                :value="category.name"
-              />
+            <div class="flex items-center col-span-6 gap-2" v-for="category in categories" :key="category">
+              <RadioButton :id="category.id" v-model="product.category" name="category" :value="category.name" />
               <label :for="category.id">{{ category.name }}</label>
             </div>
           </div>
@@ -153,35 +82,30 @@
         <div>
           <span class="block mb-4 font-bold">Subcategoria</span>
           <div class="grid grid-cols-12 gap-4">
-            <div
-              class="flex items-center col-span-6 gap-2"
-              v-for="subcategory in subcategories"
-              :key="subcategory"
-            >
-              <RadioButton
-                :id="subcategory.id"
-                v-model="product.subcategory"
-                name="subcategory"
-                :value="subcategory.name"
-              />
+            <div class="flex items-center col-span-6 gap-2" v-for="subcategory in subcategories" :key="subcategory">
+              <RadioButton :id="subcategory.id" v-model="product.subcategory" name="subcategory"
+                :value="subcategory.name" @change="loadAttributes" />
               <label :for="subcategory.id">{{ subcategory.name }}</label>
             </div>
           </div>
         </div>
-        <div class="w-full space-y-4">
-          <div class="">
-            <label for="price" class="block mb-3 font-bold">Preço</label>
-            <InputNumber
-              id="price"
-              v-model="product.price"
-              mode="currency"
-              currency="BRL"
-              locale="pt-BR"
-              fluid
-            />
+        <div>
+          <span class="block mb-4 font-bold">Atributos</span>
+          <div class="grid grid-cols-12 gap-4">
+            <div class="flex items-center col-span-6 gap-2" v-for="attribute in attributes" :key="attribute.id">
+              <RadioButton :id="attribute.id" v-model="product.attribute" name="subcategory" :value="product.attribute"
+                @change="loadAttributes" />
+              <label :for="attribute.id">{{ attribute.name }}</label>
+            </div>
           </div>
-          <div class="">
-            <label for="quantity" class="block mb-3 font-bold">Quantidade</label>
+        </div>
+        <div class="w-full space-y-4">
+          <div>
+            <label for="price" class="block font-bold">Preço</label>
+            <InputNumber id="price" v-model="product.price" mode="currency" currency="BRL" locale="pt-BR" fluid />
+          </div>
+          <div>
+            <label for="quantity" class="block font-bold">Quantidade</label>
             <InputNumber id="quantity" v-model="product.quantity" integeronly fluid />
           </div>
         </div>
@@ -192,18 +116,10 @@
       </template>
     </Dialog>
 
-    <Dialog
-      v-model:visible="deleteProductDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
+    <Dialog v-model:visible="deleteProductDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="product"
-          >Você tem certeza que quer excluir o produto <b>{{ product.name }}</b
-          >?</span
-        >
+        <span v-if="product">Você tem certeza que quer excluir o produto <b>{{ product.name }}</b>?</span>
       </div>
       <template #footer>
         <Button label="Não" icon="pi pi-times" text @click="deleteProductDialog = false" />
@@ -211,12 +127,7 @@
       </template>
     </Dialog>
 
-    <Dialog
-      v-model:visible="deleteProductsDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
+    <Dialog v-model:visible="deleteProductsDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
         <span v-if="product">Are you sure you want to delete the selected products?</span>
@@ -231,7 +142,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { FilterMatchMode } from '@primevue/core/api'
+import { FilterMatchMode } from 'primevue/api'
 import { useToast } from 'primevue/usetoast'
 import DataTable from 'primevue/datatable'
 import Tag from 'primevue/tag'
@@ -276,6 +187,14 @@ const statuses = ref([
 ])
 const categories = ref()
 const subcategories = ref()
+const attributes = ref()
+
+const loadAttributes = (e) => {
+  console.log(e.target.value)
+  axios.get(
+    `${import.meta.env.VITE_ROOT_API}/products/attributes/${selectedSubcategory.value.code}`
+  )
+}
 
 const formatCurrency = (value) => {
   if (value) {
@@ -316,6 +235,23 @@ const editProduct = (prod) => {
     })
     .catch((error) => {
       console.log(error)
+    })
+  axios
+    .get(`${import.meta.env.VITE_ROOT_API}/products/attributes/${product.value.subcategory_id}`)
+    .then((response) => {
+      const res = response.data
+      attributes.value = res.attributes.map((attribute) => {
+        return {
+          ...attribute,
+          options: attribute.attribute_options.map((option) => ({
+            name: option.value,
+            code: option.id
+          }))
+        }
+      })
+    })
+    .catch((error) => {
+      console.log(error.data)
     })
 }
 const confirmDeleteProduct = (prod) => {
